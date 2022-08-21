@@ -22,3 +22,12 @@ code {
   border-radius: 10px;
   box-shadow: 1px 1px 1px 1px darkblue;
 }
+
+
+.fret {
+  width: 3vw;
+  height: 3vh;
+  border: 1px solid black;
+  font-size: 8pt;
+  text-align: center;
+}
