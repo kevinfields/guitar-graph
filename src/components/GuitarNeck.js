@@ -1,5 +1,7 @@
 import { Card } from '@mui/material'
 import React, {useEffect, useState} from 'react';
+import GuitarFretNumbering from './GuitarFretNumbering';
+import GuitarPositionDots from './GuitarPositionDots';
 import GuitarString from './GuitarString';
 
 const notes = ['A', 'A#', 'B', 'C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B', 'C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B', 'C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#'];
@@ -26,6 +28,24 @@ const GuitarNeck = (props) => {
     props.adjustTuning(tuningCatcher);
   };
 
+  const tuneAll = (direction) => {
+
+    let tuningCatcher = [...tuning];
+    
+    for (let i=0; i<tuningCatcher.length; i++) {
+
+      const noteIndex = direction === 'down' ? notes.lastIndexOf(tuningCatcher[i].note) : notes.indexOf(tuningCatcher[i].note);
+      const nextIndex = direction === 'down' ? noteIndex - 1 : Number(noteIndex) + 1;
+
+      tuningCatcher[i] = {
+        ...tuningCatcher[i],
+        note: notes[nextIndex],
+      }
+    };
+    setTuning(tuningCatcher);
+    props.adjustTuning(tuningCatcher);
+  }
+
   useEffect(() => {
     props.adjustTuning(tuning);
   }, [])
@@ -39,6 +59,9 @@ const GuitarNeck = (props) => {
         gap: '1vh',
       }}
     >
+      <GuitarFretNumbering 
+        adjustAll={(dir) => tuneAll(dir)}
+      />
       {tuning.map(string => (
         <GuitarString
           openNote={string.note}
@@ -48,6 +71,7 @@ const GuitarNeck = (props) => {
           tuneUp={() => tuneString(string, 'up')}
         />
       ))}
+      <GuitarPositionDots />
     </Card>
   )
 }

@@ -13,7 +13,6 @@ const HomePage = () => {
   const [selectedKey, setSelectedKey] = useState('A');
   const [scale, setScale] = useState('A Major / Ionian');
   const [tuning, setTuning] = useState([]);
-  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
 
@@ -26,20 +25,26 @@ const HomePage = () => {
       <Card
         sx={{
           position: 'fixed',
-          left: '12vw',
-          top: '15vh',
-          width: '76vw',
-          height: '70vh',
+          left: '11vw',
+          top: '10vh',
+          width: '78vw',
+          height: '89vh',
         }}
       >
-        <CardHeader title="Click a key to see it on the guitar neck." />
+        <CardHeader 
+          title="Click a key to see it on the guitar neck." 
+          titleTypographyProps={{
+            fontSize: '18pt',
+            margin: '0px',
+          }}
+        />
         <Grid
           container
           sx={{
             position: 'fixed',
             left: '17.5vw',
             width: '65vw',
-            top: '22.5vh',
+            top: '18.5vh',
             height: '10vh',
           }}
           columns={24}
@@ -83,26 +88,31 @@ const HomePage = () => {
           container
           sx={{
             position: 'fixed',
-            top: '40vh',
-            height: '37.5vh',
-            width: '75vw',
-            left: '12.5vw',
+            top: '35vh',
+            width: '90vw',
+            left: '5vw',
           }}
           columns={12}
         >
           <Grid
             item
-            lg={12}
+            lg={5}
             sx={{
               marginBottom: '2vh',
             }}
           >
-            <Typography>Selected Scale: {scale}</Typography>
+            <Typography
+              sx={{
+                textAlign: 'center',
+              }}
+            >
+              Selected Scale: {scale}
+            </Typography>
           </Grid>
           { tuning.length > 0 ?
           <Grid
             item
-            lg={12}
+            lg={5}
             sx={{
 
             }}
@@ -128,6 +138,7 @@ const HomePage = () => {
             <GuitarNeck 
               scaleNotes={getScaleNotes(selectedKey, mode)}
               adjustTuning={(tuning) => setTuning(tuning)}
+              tuning={tuning}
             />
           </Grid>
         </Grid>
