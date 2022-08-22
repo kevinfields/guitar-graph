@@ -35,11 +35,11 @@ const GuitarNeck = (props) => {
     <Card
       sx={{
         display: 'flex',
-        flexDirection: 'column',
+        flexDirection: 'column-reverse',
         gap: '1vh',
       }}
     >
-      {tuning.reverse().map(string => (
+      {tuning.map(string => (
         <GuitarString
           openNote={string.note}
           number={string.number}
