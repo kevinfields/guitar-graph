@@ -72,7 +72,7 @@ const CurrentProjectPage = (props) => {
           <Button
             onClick={() => createNewSong()}
           >
-            Add Song
+            Add Track
           </Button>
         </Card>
       }
