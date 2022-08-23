@@ -1,6 +1,6 @@
 import { Button, Card, CardHeader, Typography } from '@mui/material';
 import React, {useState, useEffect} from 'react'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import Loading from '../components/Loading';
 import CREATE_NEW_SONG from '../reducers/CREATE_NEW_SONG';
 
@@ -10,6 +10,7 @@ const CurrentProjectPage = (props) => {
   const [project, setProject] = useState({});
   const [tracks, setTracks] = useState([]);
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
   const { id } = useParams();
 
   const loadProject = async () => {
@@ -63,14 +64,42 @@ const CurrentProjectPage = (props) => {
           />
           {
             tracks.length > 0 ?
-              tracks.map(track => (
-                <Typography>{track.data.songTitle}</Typography>
-              ))
+              <div
+                style={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: '1vh',
+                }}
+              >
+                {tracks.map(track => (
+                  <div
+                    style={{
+                      display: 'flex',
+                      flexDirection: 'row',
+                      gap: '1vw',
+                      marginLeft: '1vw',
+                    }}
+                  >
+                    <Typography>{track.data.songTitle}</Typography>
+                    <Button
+                      onClick={() => navigate(`/my-projects/${id}/tracks/${track.id}`)}
+                      variant='contained'
+                    >
+                      Open Track Page
+                    </Button>
+                  </div>
+                ))}
+              </div>
             :
               <Typography>Add some tracks to get started.</Typography>
           }
           <Button
             onClick={() => createNewSong()}
+            variant='contained'
+            color='secondary'
+            sx={{
+              margin: '1vw',
+            }}
           >
             Add Track
           </Button>

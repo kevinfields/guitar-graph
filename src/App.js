@@ -15,6 +15,7 @@ import LogoutPage from "./pages/LogoutPage";
 import Navbar from "./components/Navbar";
 import MyProjectsPage from "./pages/MyProjectsPage";
 import CurrentProjectPage from "./pages/CurrentProjectPage";
+import TrackPage from "./pages/TrackPage";
 
 
 firebase.initializeApp({
@@ -112,6 +113,14 @@ function App() {
                   path={'/my-projects/:id'}
                   element={
                     <CurrentProjectPage
+                      userRef={firestore.collection('users').doc(user.uid)}
+                    />
+                  }
+                />
+                <Route
+                  path={'/my-projects/:id/tracks/:trackId'}
+                  element={
+                    <TrackPage
                       userRef={firestore.collection('users').doc(user.uid)}
                     />
                   }
