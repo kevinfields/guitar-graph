@@ -1,6 +1,6 @@
 import { Button } from '@mui/material';
 import React from 'react'
-import getNote from '../functions/getNote';
+import getNote from '../../functions/getNote';
 import GuitarFret from './GuitarFret';
 
 const GuitarString = (props) => {

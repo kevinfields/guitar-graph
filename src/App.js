@@ -6,21 +6,28 @@ import "firebase/compat/auth";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { Card } from "@mui/material";
+import GuitarPage from "./guitar/pages/GuitarPage";
+import NewProjectPage from "./pages/NewProjectPage";
 import HomePage from "./pages/HomePage";
+import LoginPage from "./pages/LoginPage";
+import ProfilePage from "./pages/ProfilePage";
+import LogoutPage from "./pages/LogoutPage";
+import Navbar from "./components/Navbar";
+import MyProjectsPage from "./pages/MyProjectsPage";
+import CurrentProjectPage from "./pages/CurrentProjectPage";
 
 
 firebase.initializeApp({
-  apiKey: "AIzaSyCV-bMBng0nyBqgo7V_dnKh832PQoSf9Gs",
-  authDomain: "online-store-992a2.firebaseapp.com",
-  projectId: "online-store-992a2",
-  storageBucket: "online-store-992a2.appspot.com",
-  messagingSenderId: "424236533894",
-  appId: "1:424236533894:web:300368820c52ca183ce907",
+  apiKey: "AIzaSyDxQxK6gGK9AqEVRG7Jde47oiYryNqU83o",
+  authDomain: "rs-graphical-wiki.firebaseapp.com",
+  projectId: "rs-graphical-wiki",
+  storageBucket: "rs-graphical-wiki.appspot.com",
+  messagingSenderId: "301721311709",
+  appId: "1:301721311709:web:fd769a657410b07a747e34"
 });
 
 const auth = firebase.auth();
 const firestore = firebase.firestore();
-
 
 
 function App() {
@@ -54,23 +61,95 @@ function App() {
   const navigate = useNavigate();
 
   const loginUser = () => {
-    navigate("/");
+    navigate("/login");
   };
 
   return (
     <div className='App'>
       <ThemeProvider theme={theme}>
+        <Navbar user={user ? user : null} />
         <Routes>
           <Route
-            exact 
+            exact
             path={'/'}
             element={
-              <HomePage
+              <HomePage />
+            }
+          />
+          <Route
+            exact 
+            path={'/guitar-graph'}
+            element={
+              <GuitarPage
                 user={user ? user : null}
-                objectsRef={firestore.collection('objects')}
               />
             }
           />
+          <Route
+            exact
+            path={'/new-project'}
+            element={
+              <NewProjectPage
+                user={user ? user : null}
+                userRef={user ? firestore.collection('users').doc(user.uid) : null}
+              />
+            }
+          />
+          {
+            user ?
+              <>
+                <Route
+                  exact
+                  path={'/my-projects'}
+                  element={
+                    <MyProjectsPage
+                      user={user}
+                      userRef={firestore.collection('users').doc(user.uid)}
+                    />
+                  }
+                />
+                <Route
+                  path={'/my-projects/:id'}
+                  element={
+                    <CurrentProjectPage
+                      userRef={firestore.collection('users').doc(user.uid)}
+                    />
+                  }
+                />
+                <Route
+                  path={'/my-profile'}
+                  element={
+                    <ProfilePage
+                      user={user}
+                      userRef={firestore.collection('users').doc(user.uid)}
+                      auth={auth}
+                      onLogin={() => loginUser()}
+                    />
+                  }
+                />
+                <Route
+                  path={'/logout'}
+                  element={
+                    <LogoutPage
+                      auth={auth}
+                    />
+                  }
+                />
+              </>
+            : 
+              <>
+                <Route
+                  path={'/login'}
+                  element={
+                    <LoginPage
+                      usersRef={firestore.collection('users')}
+                      auth={auth}
+                      onLogin={() => navigate('/my-profile')}
+                    />
+                  }
+                />
+              </>
+          }
         </Routes>
       </ThemeProvider>
     </div>

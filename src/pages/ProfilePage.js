@@ -1,11 +1,11 @@
 import React from 'react'
 
-const HomePage = (props) => {
+const ProfilePage = (props) => {
   return (
     <div className='page'>
-      ya
+      profile
     </div>
   )
 }
 
-export default HomePage
+export default ProfilePage
