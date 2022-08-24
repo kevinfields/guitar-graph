@@ -89,3 +89,33 @@ code {
   padding-top: 0.75vh;
   font-size: 4pt;
 }
+
+.track-note {
+  border: 1px solid darkgray;
+  border-radius: 5px;
+  box-shadow: 1px 1px 1px 1px black;
+  padding: 2vh;
+  width: 40vw;
+  text-overflow: break-word;
+  overflow-wrap: break-word;
+  display: flex;
+  flex-direction: column;
+  gap: 2vh;
+}
+
+.track-note-buttons {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  width: 15vw;
+  float: left;
+}
+
+.new-note-tab {
+  margin-top: 2vh;
+  display: flex;
+  flex-direction: row;
+  gap: 2vw;
+  align-items: baseline;
+  justify-content: space-between;
+}
