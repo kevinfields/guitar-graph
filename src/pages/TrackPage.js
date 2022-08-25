@@ -23,7 +23,7 @@ const TrackPage = (props) => {
   });
   const [infoEditor, setInfoEditor] = useState({
     open: false,
-    field: '',
+    field: 'Select a field.',
     value: '',
   });
   const [deleteConfirmation, setDeleteConfirmation] = useState({
@@ -170,8 +170,9 @@ const TrackPage = (props) => {
 
   const selectInfoEditorField = (val) => {
 
-    setInfoEditor({...infoEditor, field: val});
-
+    if (val !== 'Select a field.' && val !== '') {
+      setInfoEditor({...infoEditor, field: val});
+    }
   }
 
   return (
@@ -317,6 +318,10 @@ const TrackPage = (props) => {
               <Button
                 variant='contained'
                 onClick={() => saveNewInfo()}
+                sx={{
+                  width: '6vw',
+                  height: '6vh',
+                }}
               >
                 Save Info
               </Button>
@@ -324,7 +329,13 @@ const TrackPage = (props) => {
                 variant='contained'
                 color='error'
                 onClick={() => setInfoEditor({open: false, field: '', value: ''})}
-              />
+                sx={{
+                  width: '6vw',
+                  height: '6vh',
+                }}
+              >
+                Exit
+              </Button>
             </div>
           :
             <TrackDataScreen 

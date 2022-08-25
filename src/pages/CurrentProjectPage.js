@@ -1,7 +1,9 @@
+import { QuestionAnswer } from '@mui/icons-material';
 import { Button, Card, CardHeader, Typography } from '@mui/material';
 import React, {useState, useEffect} from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import Loading from '../components/Loading';
+import QuestionModal from '../components/QuestionModal';
 import CREATE_NEW_SONG from '../reducers/CREATE_NEW_SONG';
 
 const CurrentProjectPage = (props) => {
@@ -10,6 +12,7 @@ const CurrentProjectPage = (props) => {
   const [project, setProject] = useState({});
   const [tracks, setTracks] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [deletingTrack, setDeletingTrack] = useState({open: false, track: {}});
   const navigate = useNavigate();
   const { id } = useParams();
 
@@ -38,6 +41,20 @@ const CurrentProjectPage = (props) => {
     await CREATE_NEW_SONG(props.userRef.collection('projects').doc(id)).then(() => {
       loadProject();
     })
+  };
+
+  const deleteTrack = async () => {
+    await 
+    props.userRef.collection('projects')
+    .doc(id).collection('tracks')
+    .doc(deletingTrack.track.id).delete()
+    .then(() => {
+      setDeletingTrack({
+        open: false,
+        track: {},
+      })
+      loadProject();
+    });
   }
 
   useEffect(() => {
@@ -63,6 +80,18 @@ const CurrentProjectPage = (props) => {
             }}
           />
           {
+            deletingTrack.open ?
+            <QuestionModal
+              onAccept={() => deleteTrack()}
+              onClose={() => setDeletingTrack({open: false, track: {}})}
+              open={deletingTrack.open}
+              header={'Are you sure?'}
+              description={"This song will be permanently deleted."}
+            />
+            : 
+            null
+          }
+          {
             tracks.length > 0 ?
               <div
                 style={{
@@ -86,6 +115,13 @@ const CurrentProjectPage = (props) => {
                       variant='contained'
                     >
                       Open Track Page
+                    </Button>
+                    <Button
+                      onClick={() => setDeletingTrack({open: true, track: track})}
+                      variant='contained'
+                      color='error'
+                    >
+                      Delete
                     </Button>
                   </div>
                 ))}

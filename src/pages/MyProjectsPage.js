@@ -27,7 +27,12 @@ const MyProjectsPage = (props) => {
   }, [])
 
   return (
-    <div className='page'>
+    <div 
+      className='page'
+      style={{
+        overflowY: 'scroll',
+      }}
+    >
       {loading ? <Loading />
       :
         projects.map(project => (
