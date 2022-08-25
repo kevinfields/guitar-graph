@@ -7,14 +7,14 @@ export default function makeIdFromTitle(title) {
 
   let titleArr = title.split('');
 
-  titleArr.forEach(letter => {
-    if ((lowercase.includes(letter) && uppercase.includes(letter)) && isNaN(letter)) {
+  for (let letter of titleArr) {
+    if ((!lowercase.includes(letter) && !uppercase.includes(letter)) && !isNaN(letter)) {
       if (letter === ' ') {
         letter = '_';
       } else {
         letter = '-';
       };
     }; 
-  });
+  };
   return titleArr.join('');
 };

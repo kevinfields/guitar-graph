@@ -1,11 +1,12 @@
 import { DeleteOutlineTwoTone } from '@mui/icons-material';
-import { Button, Card, CardHeader, TextField, Typography } from '@mui/material';
+import { Button, Card, CardHeader, Switch, TextField, Typography } from '@mui/material';
 import React, {useState, useEffect} from 'react'
 import { useNavigate, useParams } from 'react-router-dom';
 import InfoEditorScreen from '../components/InfoEditorScreen';
 import Loading from '../components/Loading';
 import QuestionModal from '../components/QuestionModal';
 import TrackDataScreen from '../components/TrackDataScreen';
+import TrackLyric from '../components/TrackLyric';
 import TrackNote from '../components/TrackNote';
 
 const TrackPage = (props) => {
@@ -14,8 +15,16 @@ const TrackPage = (props) => {
   const [track, setTrack] = useState({});
   const [newName, setNewName] = useState('');
   const [newNote, setNewNote] = useState('');
+  const [newLyric, setNewLyric] = useState('');
   const [editingName, setEditingName] = useState(false);
+  const [viewingNotes, setViewingNotes] = useState(true);
   const [noteEditor, setNoteEditor] = useState({
+    open: false,
+    oldText: '',
+    newText: '',
+    index: -1,
+  });
+  const [lyricEditor, setLyricEditor] = useState({
     open: false,
     oldText: '',
     newText: '',
@@ -29,6 +38,7 @@ const TrackPage = (props) => {
   const [deleteConfirmation, setDeleteConfirmation] = useState({
     open: false,
     index: -1,
+    type: 'none',
   });
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
@@ -57,7 +67,7 @@ const TrackPage = (props) => {
       return;
     };
 
-    const newNotes = [...track.notes];
+    let newNotes = [...track.notes];
     newNotes.push(newNote);
     const newTrackObject = {...track, notes: newNotes};
 
@@ -66,6 +76,20 @@ const TrackPage = (props) => {
       setTrack(newTrackObject);
     })
   };
+
+  const saveLyric = async () => {
+    if (newLyric === '') {
+      return;
+    };
+
+    let newLyrics = [...track.lyrics];
+    newLyrics.push(newLyric);
+    const newTrackObject = {...track, lyrics: newLyrics};
+    await trackRef.set(newTrackObject).then(() => {
+      setNewLyric('');
+      setTrack(newTrackObject);
+    });
+  }
 
   const saveName = async () => {
 
@@ -82,7 +106,6 @@ const TrackPage = (props) => {
   };
 
   const openNoteEditor = (note) => {
-
     const index = track.notes.indexOf(note);
     setNoteEditor({
       open: true,
@@ -90,17 +113,36 @@ const TrackPage = (props) => {
       newText: '',
       index: index,
     });
-
   };
+
+  const openLyricEditor = (lyric) => {
+    const index = track.lyrics.indexOf(lyric);
+    setLyricEditor({
+      open: true,
+      oldText: lyric,
+      newText: '',
+      index: index,
+    });
+  }
 
   const openNoteDeleteScreen = (note) => {
 
     setDeleteConfirmation({
       open: true,
       index: track.notes.indexOf(note),
+      type: 'note',
     });
 
   };
+
+  const openLyricDeleteScreen = (lyric) => {
+
+    setDeleteConfirmation({
+      open: true,
+      index: track.lyrics.indexOf(lyric),
+      type: 'lyric',
+    });
+  }
 
   const deleteNote = async (index) => {
 
@@ -111,10 +153,26 @@ const TrackPage = (props) => {
       setDeleteConfirmation({
         open: false,
         index: -1,
+        type: 'none'
       });
       setTrack(newTrack);
     })
   };
+
+  const deleteLyric = async (index) => {
+
+    let newLyrics = [...track.lyrics];
+    newLyrics.splice(index, 1);
+    const newTrack = {...track, lyrics: newLyrics};
+    await trackRef.set(newTrack).then(() => {
+      setDeleteConfirmation({
+        open: false,
+        index: -1,
+        type: 'none'
+      });
+      setTrack(newTrack);
+    })
+  }
 
   const saveNoteEdit = async () => {
 
@@ -126,6 +184,26 @@ const TrackPage = (props) => {
     const newTrack = {...track, notes: newNoteList};
     await trackRef.set(newTrack).then(() => {
       setNoteEditor({
+        open: false,
+        oldText: '',
+        newText: '',
+        index: -1,
+      });
+      setTrack(newTrack);
+    });
+  };
+
+  const saveLyricEdit = async () => {
+
+    if (lyricEditor.newText === '') {
+      return;
+    };
+    
+    let newLyrics = [...track.lyrics];
+    newLyrics.splice(lyricEditor.index, 1, lyricEditor.newText);
+    const newTrack = {...track, lyrics: newLyrics};
+    await trackRef.set(newTrack).then(() => {
+      setLyricEditor({
         open: false,
         oldText: '',
         newText: '',
@@ -247,14 +325,40 @@ const TrackPage = (props) => {
             </Button>
           </div>
         }
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'row',
+              gap: '1vw',
+              marginTop: '2vh',
+              marginLeft: '2vw',
+              alignItems: 'center',
+            }}
+          >
+            <Switch
+              checked={viewingNotes}
+              onChange={() => setViewingNotes(!viewingNotes)}
+            />
+            {
+              viewingNotes ?
+              <Typography>View Lyrics</Typography>
+              :
+              <Typography>View Notes</Typography>
+            }
+          </div>
         {
           deleteConfirmation.open ?
             <QuestionModal
               open={deleteConfirmation.open}
               onClose={() => setDeleteConfirmation({open: false, index: -1})}
-              onAccept={() => deleteNote(deleteConfirmation.index)}
+              onAccept={() => 
+                deleteConfirmation.type === 'note' ? 
+                  deleteNote(deleteConfirmation.index)
+                :
+                  deleteLyric(deleteConfirmation.index)
+              }
               header={'Are you sure?'}
-              description={'This note will be deleted permanently.'}
+              description={`This ${deleteConfirmation.type} will be deleted permanently.`}
             />
           : 
             null
@@ -279,24 +383,46 @@ const TrackPage = (props) => {
               width: '44vw',
             }}
           >
-            {track.notes.map(item => (
-              !noteEditor.open && noteEditor.oldText !== item ? 
-                <TrackNote
-                  note={item}
-                  onOpenEditor={() => openNoteEditor(item)}
-                  onOpenDeleteScreen={() => openNoteDeleteScreen(item)}
-                  editing={false}
-                />
+            { viewingNotes ?
+                (track.notes.map(item => (
+                  !noteEditor.open && noteEditor.oldText !== item ? 
+                    <TrackNote
+                      note={item}
+                      onOpenEditor={() => openNoteEditor(item)}
+                      onOpenDeleteScreen={() => openNoteDeleteScreen(item)}
+                      editing={false}
+                    />
+                  :
+                    <TrackNote
+                      onNoteEditChange={(e) => setNoteEditor({...noteEditor, newText: e.target.value})}
+                      onSave={() => saveNoteEdit()}
+                      onExit={() => setNoteEditor({open: false, newText: '', oldText: '', index: -1})}
+                      noteEditor={noteEditor}
+                      editing={true}
+                      note={item}
+                    />
+                )))
               :
-                <TrackNote
-                  onNoteEditChange={(e) => setNoteEditor({...noteEditor, newText: e.target.value})}
-                  onSave={() => saveNoteEdit()}
-                  onExit={() => setNoteEditor({open: false, newText: '', oldText: '', index: -1})}
-                  noteEditor={noteEditor}
-                  editing={true}
-                  note={item}
-                />
-              ))}
+                (track.lyrics.map(lyric => (
+                  !lyricEditor.open && lyricEditor.oldText !== lyric ?
+                    <TrackLyric
+                      lyric={lyric}
+                      onOpenLyricEditor={() => openLyricEditor(lyric)}
+                      onOpenDeleteScreen={() => openLyricDeleteScreen(lyric)}
+                      editing={false}
+                    />
+                  :
+                    (
+                    <TrackLyric
+                      onLyricEditChange={(e) => setLyricEditor({...noteEditor, newText: e.target.value})}
+                      onSave={() => saveLyricEdit()}
+                      onExit={() => setLyricEditor({open: false, newText: '', oldText: '', index: -1})}
+                      lyricEditor={lyricEditor}
+                      editing={true}
+                      lyric={lyric}
+                    />)
+                  )))
+              }
           </div>
           { infoEditor.open && infoEditor.field === '' ?
             <InfoEditorScreen 
@@ -353,12 +479,12 @@ const TrackPage = (props) => {
                 marginLeft: '1vw',
               }}
             >
-              Add Note:
+              Add {viewingNotes ? 'Note' : 'Lyric'}:
             </Typography>
             <TextField
-              value={newNote}
-              onChange={(e) => setNewNote(e.target.value)}
-              placeholder={'Type a new note here.'}
+              value={viewingNotes ? newNote : newLyric}
+              onChange={(e) => viewingNotes ? setNewNote(e.target.value) : setNewLyric(e.target.value)}
+              placeholder={`Type a new ${viewingNotes ? 'note' : 'lyric'} here.`}
               multiline
               rows={5}
               sx={{
@@ -366,13 +492,13 @@ const TrackPage = (props) => {
               }}
             />
             <Button
-              onClick={() => saveNote()}
+              onClick={() => viewingNotes ? saveNote() : saveLyric()}
               variant='contained'
               sx={{
                 marginRight: '3vw',
               }}
             >
-              Save Note
+              Save {viewingNotes ? 'Note' : 'Lyric'}
             </Button>
           </div>
       </Card>

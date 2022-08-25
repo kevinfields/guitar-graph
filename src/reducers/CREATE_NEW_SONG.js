@@ -1,14 +1,13 @@
 import makeIdFromTitle from "../functions/makeIdFromTitle";
 
-export default async function CREATE_NEW_SONG(projectRef) {
+export default async function CREATE_NEW_SONG(projectRef, title) {
 
-  let title = 'New Song ';
+  let unnamed = false;
 
-  let project;
-
-  await projectRef.get().then(doc => {
-    project = doc.data();
-  });
+  if (title === '') {
+    unnamed = true;
+    title = 'New Song ';
+  }
 
   let usedIds = [];
 
@@ -18,17 +17,20 @@ export default async function CREATE_NEW_SONG(projectRef) {
     });
   });
 
-  title += (usedIds.length + 1).toString();
+  if (unnamed) {
+    title += (usedIds.length + 1).toString();
+  }
 
   let id = makeIdFromTitle(title);
 
-  if (usedIds.includes(id)) {
-    id += (Math.floor(Math.random() * 1000).toString());
+  while (usedIds.includes(id)) {
+    id += (Math.floor(Math.random() * 100000).toString());
   }
 
   await projectRef.collection('tracks').doc(id).set({
     songTitle: title,
     addDate: new Date(),
     notes: [],
+    lyrics: [],
   });
 }

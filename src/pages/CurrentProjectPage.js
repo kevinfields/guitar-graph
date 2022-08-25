@@ -1,5 +1,5 @@
 import { QuestionAnswer } from '@mui/icons-material';
-import { Button, Card, CardHeader, Typography } from '@mui/material';
+import { Button, Card, CardHeader, TextField, Typography } from '@mui/material';
 import React, {useState, useEffect} from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import Loading from '../components/Loading';
@@ -13,6 +13,8 @@ const CurrentProjectPage = (props) => {
   const [tracks, setTracks] = useState([]);
   const [loading, setLoading] = useState(true);
   const [deletingTrack, setDeletingTrack] = useState({open: false, track: {}});
+  const [editingName, setEditingName] = useState({open: false, newName: ''});
+  const [namingNewSong, setNamingNewSong] = useState({open: false, newName: ''});
   const navigate = useNavigate();
   const { id } = useParams();
 
@@ -37,8 +39,9 @@ const CurrentProjectPage = (props) => {
     setLoading(false);
   }
 
-  const createNewSong = async () => {
-    await CREATE_NEW_SONG(props.userRef.collection('projects').doc(id)).then(() => {
+  const createNewSong = async (title) => {
+    await CREATE_NEW_SONG(props.userRef.collection('projects').doc(id), namingNewSong.newName).then(() => {
+      setNamingNewSong({open: false, newName: ''});
       loadProject();
     })
   };
@@ -55,7 +58,7 @@ const CurrentProjectPage = (props) => {
       })
       loadProject();
     });
-  }
+  };
 
   useEffect(() => {
     loadProject();
@@ -129,16 +132,46 @@ const CurrentProjectPage = (props) => {
             :
               <Typography>Add some tracks to get started.</Typography>
           }
-          <Button
-            onClick={() => createNewSong()}
-            variant='contained'
-            color='secondary'
-            sx={{
-              margin: '1vw',
-            }}
-          >
-            Add Track
-          </Button>
+          {
+            namingNewSong.open ?
+              <div
+                style={{
+                  display: 'flex',
+                  flexDirection: 'row',
+                  gap: '1vw',
+                }}
+              >
+                <TextField
+                  value={namingNewSong.newName}
+                  onChange={(e) => setNamingNewSong({open: true, newName: e.target.value})}
+                  placeholder={'New Name'}
+                />
+                <Button
+                  variant='contained'
+                  onClick={() => createNewSong()}
+                >
+                  Create
+                </Button>
+                <Button
+                  variant='contained'
+                  color='error'
+                  onClick={() => setNamingNewSong({open: false, newName: ''})}
+                >
+                  Exit
+                </Button>
+              </div>
+            :
+              <Button
+                onClick={() => setNamingNewSong({open: true, newName: ''})}
+                variant='contained'
+                color='secondary'
+                sx={{
+                  margin: '1vw',
+                }}
+              >
+                Add Track
+              </Button>
+          }
         </Card>
       }
     </div>
