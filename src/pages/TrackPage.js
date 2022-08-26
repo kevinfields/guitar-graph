@@ -32,7 +32,7 @@ const TrackPage = (props) => {
   });
   const [infoEditor, setInfoEditor] = useState({
     open: false,
-    field: 'Select a field.',
+    field: '',
     value: '',
   });
   const [deleteConfirmation, setDeleteConfirmation] = useState({

@@ -1,9 +1,12 @@
 import { QuestionAnswer } from '@mui/icons-material';
-import { Button, Card, CardHeader, TextField, Typography } from '@mui/material';
+import { Button, Card, CardHeader, Grid, TextField, Typography } from '@mui/material';
 import React, {useState, useEffect} from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import Loading from '../components/Loading';
+import ProjectNoteCard from '../components/ProjectNoteCard';
 import QuestionModal from '../components/QuestionModal';
+import TrackLyricDivided from '../components/TrackLyricDivided';
+import makeIdFromTitle from '../functions/makeIdFromTitle';
 import CREATE_NEW_SONG from '../reducers/CREATE_NEW_SONG';
 
 const CurrentProjectPage = (props) => {
@@ -11,10 +14,15 @@ const CurrentProjectPage = (props) => {
 
   const [project, setProject] = useState({});
   const [tracks, setTracks] = useState([]);
+  const [notes, setNotes] = useState([]);
+  const [lyrics, setLyrics] = useState([]);
   const [loading, setLoading] = useState(true);
   const [deletingTrack, setDeletingTrack] = useState({open: false, track: {}});
   const [editingName, setEditingName] = useState({open: false, newName: ''});
   const [namingNewSong, setNamingNewSong] = useState({open: false, newName: ''});
+  const [newNoteScreen, setNewNoteScreen] = useState({open: false, newNote: ''});
+  const [newLyricScreen, setNewLyricScreen] = useState({open: false, newLyric: ''});
+  const [viewing, setViewing] = useState('tracks');
   const navigate = useNavigate();
   const { id } = useParams();
 
@@ -22,8 +30,12 @@ const CurrentProjectPage = (props) => {
 
     let data;
     let tracklist = [];
+    let lyrics = [];
+    let notes = [];
     await props.userRef.collection('projects').doc(id).get().then(doc => {
       data = doc.data();
+      lyrics = doc.data().lyrics ? doc.data().lyrics : [];
+      notes = doc.data().notes ? doc.data().notes : [];
     });
 
     await props.userRef.collection('projects').doc(id).collection('tracks').get().then(snap => {
@@ -35,11 +47,13 @@ const CurrentProjectPage = (props) => {
       })
     })
     setProject(data);
+    setLyrics(lyrics);
+    setNotes(notes);
     setTracks(tracklist);
     setLoading(false);
   }
 
-  const createNewSong = async (title) => {
+  const createNewSong = async () => {
     await CREATE_NEW_SONG(props.userRef.collection('projects').doc(id), namingNewSong.newName).then(() => {
       setNamingNewSong({open: false, newName: ''});
       loadProject();
@@ -60,9 +74,122 @@ const CurrentProjectPage = (props) => {
     });
   };
 
+  const saveNewNote = async () => {
+
+    let projectData;
+    await props.userRef.collection('projects').doc(id).get().then(doc => {
+      projectData = doc.data();
+    });
+
+    projectData = {
+      ...projectData,
+      notes: projectData.notes ? [...projectData.notes, newNoteScreen.newNote] : [newNoteScreen.newNote],
+    }
+    await props.userRef.collection('projects').doc(id).set(projectData).then(() => {
+      setProject(projectData);
+      setNewNoteScreen({open: false, newNote: ''});
+      setNotes(projectData.notes);
+    });
+  };
+
+  const saveNewLyric = async () => {
+
+    let projectData;
+    await props.userRef.collection('projects').doc(id).get().then(doc => {
+      projectData = doc.data();
+    });
+
+    projectData = {
+      ...projectData,
+      lyrics: projectData.lyrics ? projectData.lyrics.concat(newLyricScreen.newLyric) : [newLyricScreen.newLyric], 
+    };
+
+    await props.userRef.collection('projects').doc(id).set(projectData).then(() => {
+      setProject(projectData);
+      setNewLyricScreen({open: false, newLyric: ''});
+      setLyrics(projectData.lyrics);
+    });
+  };
+
+  const replaceNote = async (newNote, oldNote) => {
+
+    const index = notes.indexOf(oldNote);
+    let catcher = [...notes];
+    catcher.splice(index, 1, oldNote);
+    setNotes(catcher);
+
+    await props.userRef.collection('projects').doc(id).set({
+      ...project,
+      notes: catcher,
+    }).then(() => {
+      setProject({
+        ...project,
+        notes: catcher,
+      });
+    });
+  };
+
+  const deleteNote = async (note) => {
+
+    const index = notes.indexOf(note);
+    let catcher = [...notes];
+    catcher.splice(index, 1);
+
+    await props.userRef.collection('projects').doc(id).set({
+      ...project,
+      notes: catcher,
+    }).then(() => {
+      setProject({
+        ...project,
+        notes: catcher,
+      });
+      setNotes(catcher);
+    });
+  };
+
   useEffect(() => {
     loadProject();
   }, []);
+
+  useEffect(() => {
+
+    if (newLyricScreen.open) {
+      if (namingNewSong.open) {
+        setNamingNewSong({...namingNewSong, open: false});
+      };
+      if (newNoteScreen.open) {
+        setNewNoteScreen({...newNoteScreen, open: false});
+      };
+    };
+
+  }, [newLyricScreen]);
+
+  useEffect(() => {
+
+    if (newNoteScreen.open) {
+      if (namingNewSong.open) {
+        setNamingNewSong({...namingNewSong, open: false});
+      };
+      if (newLyricScreen.open) {
+        setNewLyricScreen({...newLyricScreen, open: false});
+      };
+    };
+
+  }, [newNoteScreen]);
+
+  useEffect(() => {
+
+    if (namingNewSong.open) {
+      if (newNoteScreen.open) {
+        setNewNoteScreen({...newNoteScreen, open: false});
+      };
+      if (newLyricScreen.open) {
+        setNewLyricScreen({...newLyricScreen, open: false});
+      };
+    };
+
+  }, [namingNewSong]);
+
 
   return (
     <div className='page'>
@@ -82,6 +209,34 @@ const CurrentProjectPage = (props) => {
               textAlign: 'center',
             }}
           />
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'row',
+              justifyContent: 'space-around',
+              marginBottom: '2vh',
+              gap: '1vw',
+            }}
+          >
+            <Button
+              variant='contained'
+              onClick={() => setViewing('tracks')}
+            >
+              View Tracks
+            </Button>
+            <Button
+              variant='contained'
+              onClick={() => setViewing('notes')}
+            >
+              View Notes
+            </Button>
+            <Button
+              variant='contained'
+              onClick={() => setViewing('lyrics')}
+            >
+              View Lyrics
+            </Button>
+          </div>
           {
             deletingTrack.open ?
             <QuestionModal
@@ -95,75 +250,96 @@ const CurrentProjectPage = (props) => {
             null
           }
           {
-            tracks.length > 0 ?
-              <div
-                style={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  gap: '1vh',
-                }}
-              >
-                {tracks.map(track => (
-                  <Card
-                    sx={{
-                      display: 'flex',
-                      flexDirection: 'row',
-                      gap: '1vw',
-                      marginLeft: '1vw',
-                      padding: '1vh',
-                    }}
-                  >
-                    <Typography>{track.data.songTitle}</Typography>
-                    <Button
-                      onClick={() => navigate(`/my-projects/${id}/tracks/${track.id}`)}
-                      variant='contained'
+            viewing === 'tracks' ?
+              tracks.length > 0 ?
+                <div
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: '1vh',
+                  }}
+                >
+                  {tracks.map(track => (
+                    <Card
+                      sx={{
+                        display: 'flex',
+                        flexDirection: 'row',
+                        gap: '1vw',
+                        marginLeft: '1vw',
+                        padding: '1vh',
+                      }}
                     >
-                      Open Track Page
-                    </Button>
-                    <Button
-                      onClick={() => setDeletingTrack({open: true, track: track})}
-                      variant='contained'
-                      color='error'
-                    >
-                      Delete
-                    </Button>
+                      <Typography>{track.data.songTitle}</Typography>
+                      <Button
+                        onClick={() => navigate(`/my-projects/${id}/tracks/${track.id}`)}
+                        variant='contained'
+                      >
+                        Open Track Page
+                      </Button>
+                      <Button
+                        onClick={() => setDeletingTrack({open: true, track: track})}
+                        variant='contained'
+                        color='error'
+                      >
+                        Delete
+                      </Button>
+                    </Card>
+                  ))}
+                </div>
+              :
+                <Typography>Add some tracks to get started.</Typography>
+            :
+              viewing === 'notes' ?
+                notes.map(note => (
+                  <Card>
+                    <ProjectNoteCard
+                      note={note}
+                      saveNote={(newNote) => replaceNote(note, newNote)}
+                      deleteNote={() => deleteNote(note)}
+                    />
                   </Card>
-                ))}
-              </div>
-            :
-              <Typography>Add some tracks to get started.</Typography>
+                ))
+            : viewing === 'lyrics' ?
+                lyrics.map(lyric => (
+                  <Card>
+                    <TrackLyricDivided verse={lyric} />
+                  </Card>
+                ))
+            : null
           }
-          {
-            namingNewSong.open ?
-              <Card
-                style={{
-                  display: 'flex',
-                  flexDirection: 'row',
-                  gap: '1vw',
-                  marginLeft: '1vw',
-                  padding: '1vh',
-                }}
-              >
-                <TextField
-                  value={namingNewSong.newName}
-                  onChange={(e) => setNamingNewSong({open: true, newName: e.target.value})}
-                  placeholder={'New Name'}
-                />
-                <Button
-                  variant='contained'
-                  onClick={() => createNewSong()}
+            {
+              namingNewSong.open ?
+                <Card
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'row',
+                    gap: '1vw',
+                    marginLeft: '1vw',
+                    padding: '1vh',
+                  }}
                 >
-                  Create
-                </Button>
-                <Button
-                  variant='contained'
-                  color='error'
-                  onClick={() => setNamingNewSong({open: false, newName: ''})}
-                >
-                  Exit
-                </Button>
-              </Card>
-            :
+                  <TextField
+                    value={namingNewSong.newName}
+                    onChange={(e) => setNamingNewSong({open: true, newName: e.target.value})}
+                    placeholder={'New Name'}
+                  />
+                  <Button
+                    variant='contained'
+                    onClick={() => createNewSong()}
+                  >
+                    Create
+                  </Button>
+                  <Button
+                    variant='contained'
+                    color='error'
+                    onClick={() => setNamingNewSong({open: false, newName: ''})}
+                  >
+                    Exit
+                  </Button>
+                </Card>
+              : null
+            }
+            { viewing === 'tracks' ?
               <Button
                 onClick={() => setNamingNewSong({open: true, newName: ''})}
                 variant='contained'
@@ -174,8 +350,153 @@ const CurrentProjectPage = (props) => {
               >
                 Add Track
               </Button>
-          }
+              : viewing === 'notes' ?
+              <Button
+                onClick={() => setNewNoteScreen({open: true, newNote: ''})}
+                variant='contained'
+                color='secondary'
+                sx={{
+                  margin: '1vw',
+                }}
+              >
+                Add Project Note
+              </Button>
+              : viewing === 'lyrics' ?
+              <Button
+                onClick={() => setNewLyricScreen({open: true, newLyric: ''})}
+                variant='contained'
+                color='secondary'
+                sx={{
+                  margin: '1vw',
+                }}
+              >
+                Add Project Lyric
+              </Button>
+              : null
+            }
         </Card>
+      }
+      {
+        newNoteScreen.open ?
+          <Grid
+            container
+            columns={12}
+            columnSpacing={1}
+            rowSpacing={2}
+            sx={{
+              marginLeft: '5vw',
+              marginTop: '2vh',
+              width: '61vw',
+            }}
+          >
+            <Grid 
+              item 
+              lg={12}
+            >
+              <TextField
+                value={newNoteScreen.newNote}
+                onChange={(e) => setNewNoteScreen({...newNoteScreen, newNote: e.target.value})}
+                placeholder={'Type a new note.'}
+                multiline
+                rows={5}
+                sx={{
+                  width: '100%',
+                }}
+              />
+            </Grid>
+            <Grid 
+              item 
+              lg={12}
+              sx={{
+                display: 'flex',
+                flexDirection: 'row',
+                justifyContent: 'space-evenly',
+              }}
+            >
+              <Button
+                onClick={() => saveNewNote()}
+                variant='contained'
+                sx={{
+                  width: '10vw',
+                }}
+              >
+                Save Note
+              </Button>
+              <Button
+                onClick={() => setNewNoteScreen({...newNoteScreen, open: false})}
+                variant='contained'
+                color='error'
+                sx={{
+                  width: '10vw',
+                }}
+              >
+                Exit
+              </Button>
+            </Grid>
+          </Grid>
+        : 
+          null
+      }
+      {
+        newLyricScreen.open ?
+        <Grid
+            container
+            columns={12}
+            columnSpacing={0}
+            rowSpacing={2}
+            sx={{
+              marginLeft: '5vw',
+              marginTop: '2vh',
+              width: '61vw',
+            }}
+          >
+            <Grid 
+              item 
+              lg={12}
+            >
+              <TextField
+                value={newLyricScreen.newLyric}
+                onChange={(e) => setNewLyricScreen({...newLyricScreen, newLyric: e.target.value})}
+                placeholder={'Type a new lyric. (Use // to start a new line.)'}
+                multiline
+                rows={5}
+                sx={{
+                  width: '100%',
+                }}
+              />
+            </Grid>
+            <Grid 
+              item 
+              lg={12}
+              sx={{
+                display: 'flex',
+                flexDirection: 'row',
+                justifyContent: 'space-evenly',
+              }}
+            >
+              <Button
+                onClick={() => saveNewLyric()}
+                variant='contained'
+                sx={{
+                  width: '10vw',
+                }}
+              >
+                Save Lyric
+              </Button>
+              <Button
+                onClick={() => setNewLyricScreen({...newLyricScreen, open: false})}
+                variant='contained'
+                color='error'
+                sx={{
+                  width: '10vw',
+                }}
+              >
+                Exit
+              </Button>
+            </Grid>
+          </Grid>
+        : 
+          null
       }
     </div>
   )
