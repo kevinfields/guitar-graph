@@ -251,7 +251,7 @@ const TrackPage = (props) => {
     if (val !== 'Select a field.' && val !== '') {
       setInfoEditor({...infoEditor, field: val});
     }
-  }
+  };
 
   return (
     <div className='page'>
@@ -305,12 +305,19 @@ const TrackPage = (props) => {
               display: 'flex',
               flexDirection: 'row',
               gap: '1vw',
+              marginTop: '2vh',
               marginLeft: '2vw',
               alignItems: 'center',
+              width: '60vw',
+              height: '6vh',
+              
             }}
           >
             <CardHeader
               title={track.songTitle}
+              sx={{
+                display: 'inline-block',
+              }}
             />
             <Button
               variant='contained'
@@ -484,7 +491,7 @@ const TrackPage = (props) => {
             <TextField
               value={viewingNotes ? newNote : newLyric}
               onChange={(e) => viewingNotes ? setNewNote(e.target.value) : setNewLyric(e.target.value)}
-              placeholder={`Type a new ${viewingNotes ? 'note' : 'lyric'} here.`}
+              placeholder={`Type a new ${viewingNotes ? 'note' : 'lyric'} here.${viewingNotes ? null : ' (Type // to indicate a new line.)'}`}
               multiline
               rows={5}
               sx={{

@@ -104,12 +104,13 @@ const CurrentProjectPage = (props) => {
                 }}
               >
                 {tracks.map(track => (
-                  <div
-                    style={{
+                  <Card
+                    sx={{
                       display: 'flex',
                       flexDirection: 'row',
                       gap: '1vw',
                       marginLeft: '1vw',
+                      padding: '1vh',
                     }}
                   >
                     <Typography>{track.data.songTitle}</Typography>
@@ -126,7 +127,7 @@ const CurrentProjectPage = (props) => {
                     >
                       Delete
                     </Button>
-                  </div>
+                  </Card>
                 ))}
               </div>
             :

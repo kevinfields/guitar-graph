@@ -1,5 +1,6 @@
 import { Button, TextField, Typography } from '@mui/material'
 import React from 'react'
+import TrackLyricDivided from './TrackLyricDivided'
 
 const TrackLyric = (props) => {
 
@@ -31,7 +32,7 @@ const TrackLyric = (props) => {
 
   return (
     <div className='track-note'>
-      <Typography>{props.lyric}</Typography>
+      <TrackLyricDivided verse={props.lyric} />
       <div className='track-note-buttons'>
         <Button
           variant='contained'
