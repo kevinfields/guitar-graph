@@ -17,6 +17,7 @@ const CurrentProjectCard = (props) => {
         display: 'flex',
         flexDirection: 'column',
         gap: '3vh',
+        minHeight: 'min-content',
       }}
     >
       <CardHeader

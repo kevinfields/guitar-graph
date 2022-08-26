@@ -342,16 +342,12 @@ const TrackPage = (props) => {
               alignItems: 'center',
             }}
           >
+            <Typography>View Lyrics</Typography>
             <Switch
               checked={viewingNotes}
               onChange={() => setViewingNotes(!viewingNotes)}
             />
-            {
-              viewingNotes ?
-              <Typography>View Lyrics</Typography>
-              :
-              <Typography>View Notes</Typography>
-            }
+            <Typography>View Notes</Typography>
           </div>
         {
           deleteConfirmation.open ?
@@ -491,7 +487,7 @@ const TrackPage = (props) => {
             <TextField
               value={viewingNotes ? newNote : newLyric}
               onChange={(e) => viewingNotes ? setNewNote(e.target.value) : setNewLyric(e.target.value)}
-              placeholder={`Type a new ${viewingNotes ? 'note' : 'lyric'} here.${viewingNotes ? null : ' (Type // to indicate a new line.)'}`}
+              placeholder={`Type a new ${viewingNotes ? 'note' : 'lyric'} here.${viewingNotes ? '' : ' (Type // to indicate a new line.)'}`}
               multiline
               rows={5}
               sx={{

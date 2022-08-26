@@ -1,4 +1,4 @@
-import { Button, TextField } from '@mui/material'
+import { Button, Card, CardHeader, TextField } from '@mui/material'
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import { EMPTY_PHOTOURL } from '../data/EMPTY_PHOTOURL';
@@ -33,27 +33,58 @@ const NewProjectPage = (props) => {
 
   return (
     <div className='page'>
-      <TextField
-        value={title}
-        onChange={(e) => setTitle(e.target.value)}
-        sx={{
-          width: '15vw',
+      <Card
+        style={{
+          position: 'fixed',
+          left: '30vw',
+          top: '20vh',
+          width: '40vw',
+          height: '70vh',
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '1vh',
+          justifyContent: 'space-evenly',
+          alignItems: 'center',
         }}
-        placeholder={'Title'}
-      />
-      <TextField
-        value={photoURL}
-        onChange={(e) => setPhotoURL(e.target.value)}
-        sx={{
-          width: '15vw',
-        }}
-        placeholder={'Photo URL (optional)'}
-      />
-      <Button
-        onClick={() => createProject()}
       >
-        Create Project
-      </Button>
+        <CardHeader 
+          title='Create a New Project'
+          sx={{
+            textAlign: 'center',
+          }}
+        />
+        <TextField
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+          sx={{
+            width: '15vw',
+          }}
+          placeholder={'Title'}
+        />
+        <TextField
+          value={photoURL}
+          onChange={(e) => setPhotoURL(e.target.value)}
+          sx={{
+            width: '15vw',
+          }}
+          placeholder={'Photo URL (optional)'}
+        />
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'row',
+            width: '20vw',
+            justifyContent: 'space-evenly',
+          }}
+        >
+          <Button
+            onClick={() => createProject()}
+            variant='contained'
+          >
+            Create Project
+          </Button>
+        </div>
+      </Card>
     </div>
   )
 }

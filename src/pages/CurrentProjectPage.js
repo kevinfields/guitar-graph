@@ -135,11 +135,13 @@ const CurrentProjectPage = (props) => {
           }
           {
             namingNewSong.open ?
-              <div
+              <Card
                 style={{
                   display: 'flex',
                   flexDirection: 'row',
                   gap: '1vw',
+                  marginLeft: '1vw',
+                  padding: '1vh',
                 }}
               >
                 <TextField
@@ -160,7 +162,7 @@ const CurrentProjectPage = (props) => {
                 >
                   Exit
                 </Button>
-              </div>
+              </Card>
             :
               <Button
                 onClick={() => setNamingNewSong({open: true, newName: ''})}

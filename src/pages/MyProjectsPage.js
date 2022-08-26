@@ -29,18 +29,34 @@ const MyProjectsPage = (props) => {
   return (
     <div 
       className='page'
-      style={{
-        overflowY: 'scroll',
-      }}
     >
-      {loading ? <Loading />
-      :
-        projects.map(project => (
-          <CurrentProjectCard
-            project={project}
-          />
-        ))
-      }
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '2vh',
+          overflowY: 'scroll',
+          flex: 1,
+          height: '75vh',
+          padding: '2vh',
+        }}
+      >
+        {loading ? <Loading />
+        :
+          projects.map(project => (
+            <div
+              style={{
+                display: 'flex',
+                minHeight: 'min-content',
+              }}
+            >
+              <CurrentProjectCard
+                project={project}
+              />
+            </div>
+          ))
+        }
+      </div>
     </div>
   )
 }
