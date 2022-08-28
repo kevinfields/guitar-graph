@@ -1,5 +1,5 @@
 import React from 'react';
-import {Typography} from '@mui/material';
+import {Button, Typography} from '@mui/material';
 
 const TrackLyricDivided = (props) => {
 
@@ -10,6 +10,17 @@ const TrackLyricDivided = (props) => {
       {lyricList.map(line => (
         <Typography className='lyric-line'>{line}</Typography>
       ))}
+      { props.onOpenAssignmentScreen ?
+          <Button
+            variant='contained'
+            color='secondary'
+            onClick={() => props.onOpenAssignmentScreen()}
+          >
+            Assign To Track
+          </Button>
+        :
+          null
+      }
     </div>
   )
 }

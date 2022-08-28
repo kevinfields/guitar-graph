@@ -2,11 +2,13 @@ import { QuestionAnswer } from '@mui/icons-material';
 import { Button, Card, CardHeader, Grid, TextField, Typography } from '@mui/material';
 import React, {useState, useEffect} from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
+import AssignmentScreen from '../components/AssignmentScreen';
 import Loading from '../components/Loading';
 import ProjectNoteCard from '../components/ProjectNoteCard';
 import QuestionModal from '../components/QuestionModal';
 import TrackLyricDivided from '../components/TrackLyricDivided';
 import makeIdFromTitle from '../functions/makeIdFromTitle';
+import ASSIGN_TO_TRACK from '../reducers/ASSIGN_TO_TRACK';
 import CREATE_NEW_SONG from '../reducers/CREATE_NEW_SONG';
 
 const CurrentProjectPage = (props) => {
@@ -22,6 +24,7 @@ const CurrentProjectPage = (props) => {
   const [namingNewSong, setNamingNewSong] = useState({open: false, newName: ''});
   const [newNoteScreen, setNewNoteScreen] = useState({open: false, newNote: ''});
   const [newLyricScreen, setNewLyricScreen] = useState({open: false, newLyric: ''});
+  const [assignmentScreen, setAssignmentScreen] = useState({open: false, index: -1, type: ''});
   const [viewing, setViewing] = useState('tracks');
   const navigate = useNavigate();
   const { id } = useParams();
@@ -146,6 +149,11 @@ const CurrentProjectPage = (props) => {
       setNotes(catcher);
     });
   };
+
+  const assignToTrack = async (trackId) => {
+    await ASSIGN_TO_TRACK(props.userRef.collection('projects').doc(id), assignmentScreen.type, assignmentScreen.index, trackId);
+    loadProject();
+  }
 
   useEffect(() => {
     loadProject();
@@ -296,13 +304,33 @@ const CurrentProjectPage = (props) => {
                       note={note}
                       saveNote={(newNote) => replaceNote(note, newNote)}
                       deleteNote={() => deleteNote(note)}
+                      onOpenAssignmentScreen={() => setAssignmentScreen({...assignmentScreen, open: true, type: 'note', index: notes.indexOf(note)})}
                     />
+                    {assignmentScreen.open && assignmentScreen.type === 'note' && assignmentScreen.index === notes.indexOf(note) ?
+                      <AssignmentScreen
+                        tracklist={tracks}
+                        chooseTrack={(id) => assignToTrack(id)}
+                        onClose={() => setAssignmentScreen({...assignmentScreen, open: false})}
+                      />
+                      : null
+                    }
                   </Card>
                 ))
             : viewing === 'lyrics' ?
                 lyrics.map(lyric => (
                   <Card>
-                    <TrackLyricDivided verse={lyric} />
+                    <TrackLyricDivided 
+                      verse={lyric}
+                      onOpenAssignmentScreen={() => setAssignmentScreen({...assignmentScreen, open: true, type: 'lyric', index: lyrics.indexOf(lyric)})}
+                    />
+                    {assignmentScreen.open && assignmentScreen.type === 'lyric' && assignmentScreen.index === lyrics.indexOf(lyric) ?
+                      <AssignmentScreen
+                        tracklist={tracks}
+                        chooseTrack={(id) => assignToTrack(id)}
+                        onClose={() => setAssignmentScreen({...assignmentScreen, open: false})}
+                      />
+                      : null
+                    }
                   </Card>
                 ))
             : null

@@ -72,6 +72,17 @@ const ProjectNoteCard = (props) => {
           Delete
         </Button>
       </div>
+      {props.onOpenAssignmentScreen ?
+        <Button
+          onClick={() => props.onOpenAssignmentScreen()}
+          variant='contained'
+          color='secondary'
+        >
+          Assign to Track
+        </Button>
+        :
+        null
+      }
     </Card>
   )
 }
