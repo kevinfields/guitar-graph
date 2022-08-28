@@ -43,6 +43,12 @@ code {
   
 }
 
+.text-field-save-exit {
+  display: flex;
+  flex-direction: row;
+  gap: 1vw;
+}
+
 .fret {
   width: 3vw;
   height: 4.5vh;

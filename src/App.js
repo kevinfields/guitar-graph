@@ -132,6 +132,7 @@ function App() {
                       user={user}
                       userRef={firestore.collection('users').doc(user.uid)}
                       auth={auth}
+                      takenNamesRef={firestore.collection('taken_usernames').doc('main_list')}
                       onLogin={() => loginUser()}
                     />
                   }
