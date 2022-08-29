@@ -1,4 +1,4 @@
-import { Button, Card, MenuItem, Select } from '@mui/material'
+import { Button, Card, MenuItem, Select, TextField } from '@mui/material'
 import React, {useState} from 'react'
 
 const AssignmentScreen = (props) => {
@@ -6,15 +6,23 @@ const AssignmentScreen = (props) => {
   const [track, setTrack] = useState(props.tracklist[0]);
 
   return (
-    <Card>
-      <Select
-        value={track.id}
+    <Card
+      sx={{
+        display: 'flex',
+        flexDirection: 'row',
+        gap: '1vw',
+        margin: '1vw',
+      }}
+    >
+      <TextField
+        select
+        value={track}
         onChange={(e) => setTrack(e.target.value)}
       >
-        {props.tracklist.map(track => (
-          <MenuItem value={track.id}>{track.data.title}</MenuItem>
+        {props.tracklist.map(trackItem => (
+          <MenuItem value={trackItem}>{trackItem.data.title}</MenuItem>
         ))}
-      </Select>
+      </TextField>
       <Button
         variant='contained'
         onClick={() => props.chooseTrack(track)}

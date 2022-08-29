@@ -309,7 +309,7 @@ const CurrentProjectPage = (props) => {
                     {assignmentScreen.open && assignmentScreen.type === 'note' && assignmentScreen.index === notes.indexOf(note) ?
                       <AssignmentScreen
                         tracklist={tracks}
-                        chooseTrack={(id) => assignToTrack(id)}
+                        chooseTrack={(track) => assignToTrack(track.id)}
                         onClose={() => setAssignmentScreen({...assignmentScreen, open: false})}
                       />
                       : null
@@ -326,7 +326,7 @@ const CurrentProjectPage = (props) => {
                     {assignmentScreen.open && assignmentScreen.type === 'lyric' && assignmentScreen.index === lyrics.indexOf(lyric) ?
                       <AssignmentScreen
                         tracklist={tracks}
-                        chooseTrack={(id) => assignToTrack(id)}
+                        chooseTrack={(track) => assignToTrack(track.id)}
                         onClose={() => setAssignmentScreen({...assignmentScreen, open: false})}
                       />
                       : null

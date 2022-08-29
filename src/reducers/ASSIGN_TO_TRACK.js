@@ -3,6 +3,9 @@ export default async function ASSIGN_TO_TRACK(projectRef, type, index, trackId) 
   let project;
   await projectRef.get().then(doc => {
     project = doc.data();
+    console.log('trackId: ' + trackId);
+    console.log('project: ');
+    console.log(JSON.stringify(project));
   });
 
   let track;
