@@ -5,6 +5,9 @@ const AssignmentScreen = (props) => {
 
   const [track, setTrack] = useState(props.tracklist[0]);
 
+  console.log('tracklist: ')
+  console.table(props.tracklist)
+
   return (
     <Card
       sx={{
@@ -16,11 +19,12 @@ const AssignmentScreen = (props) => {
     >
       <TextField
         select
-        value={track}
-        onChange={(e) => setTrack(e.target.value)}
+        type='string'
+        value={track.id}
+        onChange={(e) => setTrack(props.tracklist.find(trackItem => trackItem.id === e.target.value))}
       >
         {props.tracklist.map(trackItem => (
-          <MenuItem value={trackItem}>{trackItem.data.title}</MenuItem>
+          <MenuItem value={trackItem.id}>{trackItem.data.songTitle}</MenuItem>
         ))}
       </TextField>
       <Button
