@@ -74,7 +74,7 @@ function App() {
             exact
             path={'/'}
             element={
-              <HomePage />
+              <HomePage user={user ? user : null}/>
             }
           />
           <Route

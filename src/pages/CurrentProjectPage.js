@@ -198,6 +198,37 @@ const CurrentProjectPage = (props) => {
 
   }, [namingNewSong]);
 
+  useEffect(() => {
+
+    if (viewing === 'tracks') {
+      if (newNoteScreen.open) {
+        setNewNoteScreen({...newNoteScreen, open: false});
+      };
+      if (newLyricScreen.open) {
+        setNewLyricScreen({...newLyricScreen, open: false});
+      };
+    };
+
+    if (viewing === 'notes') {
+      if (namingNewSong.open) {
+        setNamingNewSong({...namingNewSong, open: false});
+      };
+      if (newLyricScreen.open) {
+        setNewLyricScreen({...newLyricScreen, open: false});
+      };
+    };
+
+    if (viewing === 'lyrics') {
+      if (namingNewSong.open) {
+        setNamingNewSong({...namingNewSong, open: false});
+      };
+      if (newNoteScreen.open) {
+        setNewNoteScreen({...newNoteScreen, open: false});
+      };
+    }
+
+  }, [viewing])
+
 
   return (
     <div className='page'>
@@ -229,18 +260,21 @@ const CurrentProjectPage = (props) => {
             <Button
               variant='contained'
               onClick={() => setViewing('tracks')}
+              color='primary'
             >
               View Tracks
             </Button>
             <Button
               variant='contained'
               onClick={() => setViewing('notes')}
+              color='success'
             >
               View Notes
             </Button>
             <Button
               variant='contained'
               onClick={() => setViewing('lyrics')}
+              color='info'
             >
               View Lyrics
             </Button>
