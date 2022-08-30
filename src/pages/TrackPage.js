@@ -110,7 +110,7 @@ const TrackPage = (props) => {
     setNoteEditor({
       open: true,
       oldText: note,
-      newText: '',
+      newText: note,
       index: index,
     });
   };
@@ -120,7 +120,7 @@ const TrackPage = (props) => {
     setLyricEditor({
       open: true,
       oldText: lyric,
-      newText: '',
+      newText: lyric,
       index: index,
     });
   }
@@ -388,42 +388,46 @@ const TrackPage = (props) => {
           >
             { viewingNotes ?
                 (track.notes.map(item => (
-                  !noteEditor.open && noteEditor.oldText !== item ? 
+                  <>
+                  {noteEditor.oldText !== item ? 
                     <TrackNote
                       note={item}
                       onOpenEditor={() => openNoteEditor(item)}
                       onOpenDeleteScreen={() => openNoteDeleteScreen(item)}
-                      editing={false}
                     />
                   :
                     <TrackNote
-                      onNoteEditChange={(e) => setNoteEditor({...noteEditor, newText: e.target.value})}
+                      onNoteEditorChange={(newNote) => setNoteEditor({...noteEditor, newText: newNote})}
                       onSave={() => saveNoteEdit()}
                       onExit={() => setNoteEditor({open: false, newText: '', oldText: '', index: -1})}
                       noteEditor={noteEditor}
                       editing={true}
                       note={item}
                     />
+                  }
+                  </>
                 )))
               :
                 (track.lyrics.map(lyric => (
-                  !lyricEditor.open && lyricEditor.oldText !== lyric ?
-                    <TrackLyric
-                      lyric={lyric}
-                      onOpenLyricEditor={() => openLyricEditor(lyric)}
-                      onOpenDeleteScreen={() => openLyricDeleteScreen(lyric)}
-                      editing={false}
-                    />
-                  :
-                    (
-                    <TrackLyric
-                      onLyricEditChange={(e) => setLyricEditor({...noteEditor, newText: e.target.value})}
-                      onSave={() => saveLyricEdit()}
-                      onExit={() => setLyricEditor({open: false, newText: '', oldText: '', index: -1})}
-                      lyricEditor={lyricEditor}
-                      editing={true}
-                      lyric={lyric}
-                    />)
+                  <>
+                    {lyricEditor.oldText !== lyric ?
+                      <TrackLyric
+                        lyric={lyric}
+                        onOpenEditor={() => openLyricEditor(lyric)}
+                        onOpenDeleteScreen={() => openLyricDeleteScreen(lyric)}
+                      />
+                    :
+                      (
+                      <TrackLyric
+                        onLyricEditChange={(newLyric) => setLyricEditor({...lyricEditor, newText: newLyric})}
+                        onSave={() => saveLyricEdit()}
+                        onExit={() => setLyricEditor({open: false, newText: '', oldText: '', index: -1})}
+                        lyricEditor={lyricEditor}
+                        editing={true}
+                        lyric={lyric}
+                      />)
+                    }
+                  </>
                   )))
               }
           </div>

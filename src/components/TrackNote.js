@@ -15,12 +15,14 @@ const TrackNote = (props) => {
           <Button
             variant='contained'
             onClick={() => props.onSave()}
+            color='success'
           >
             Save
           </Button>
           <Button
             variant='contained'
             onClick={() => props.onExit()}
+            color='error'
           >
             Exit
           </Button>
