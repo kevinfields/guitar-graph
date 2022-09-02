@@ -132,11 +132,29 @@ const CurrentProjectPage = (props) => {
     });
   };
 
+  const replaceLyric = async (newLyric, oldLyric) => {
+    const index = notes.indexOf(oldLyric);
+    let catcher = [...lyrics];
+    catcher.splice(index, 1, oldLyric);
+    setLyrics(catcher);
+
+    await props.userRef.collection('projects').doc(id).set({
+      ...project,
+      lyrics: catcher,
+    }).then(() => {
+      setProject({
+        ...project,
+        lyrics: catcher,
+      });
+    });
+  }
+
   const deleteNote = async (note) => {
 
     const index = notes.indexOf(note);
     let catcher = [...notes];
     catcher.splice(index, 1);
+    setNotes(catcher);
 
     await props.userRef.collection('projects').doc(id).set({
       ...project,
@@ -146,7 +164,24 @@ const CurrentProjectPage = (props) => {
         ...project,
         notes: catcher,
       });
-      setNotes(catcher);
+    });
+  };
+
+  const deleteLyric = async (lyric) => {
+
+    const index = lyrics.indexOf(lyric);
+    let catcher = [...notes];
+    catcher.splice(index, 1);
+    setLyrics(catcher);
+
+    await props.userRef.collection('projects').doc(id).set({
+      ...project,
+      lyrics: catcher,
+    }).then(() => {
+      setProject({
+        ...project,
+        lyrics: catcher,
+      });
     });
   };
 
@@ -355,6 +390,8 @@ const CurrentProjectPage = (props) => {
                   <Card>
                     <TrackLyricDivided 
                       verse={lyric}
+                      saveLyric={(newLyric) => replaceLyric(lyric, newLyric)}
+                      deleteLyric={() => deleteLyric(lyric)}
                       onOpenAssignmentScreen={() => setAssignmentScreen({...assignmentScreen, open: true, type: 'lyric', index: lyrics.indexOf(lyric)})}
                     />
                     {assignmentScreen.open && assignmentScreen.type === 'lyric' && assignmentScreen.index === lyrics.indexOf(lyric) ?

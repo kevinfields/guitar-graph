@@ -45,6 +45,7 @@ const ProjectNoteCard = (props) => {
           display: 'flex',
           flexDirection: 'row',
           gap: '1vw',
+          margin: '2vh',
         }}
       >
         {

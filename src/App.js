@@ -35,7 +35,7 @@ function App() {
 
   const theme = createTheme({
     typography: {
-      fontFamily: 'Helvetica'
+      fontFamily: 'Quicksand'
     },
     palette: {
       primary: {

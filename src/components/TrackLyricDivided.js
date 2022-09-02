@@ -1,27 +1,111 @@
-import React from 'react';
-import {Button, Typography} from '@mui/material';
+import React, {useState, useEffect} from 'react';
+import {Button, Card, TextField, Typography} from '@mui/material';
 
 const TrackLyricDivided = (props) => {
 
   const lyricList = props.verse.split('//');
+  const [lyric, setLyric] = useState(props.note);
+  const [editing, setEditing] = useState(false);
+
+  const saveLyric = (lyric) => {
+    setEditing(false);
+    props.saveLyric(lyric);
+  }
 
   return (
-    <div>
-      {lyricList.map(line => (
-        <Typography className='lyric-line'>{line}</Typography>
-      ))}
-      { props.onOpenAssignmentScreen ?
-          <Button
-            variant='contained'
-            color='secondary'
-            onClick={() => props.onOpenAssignmentScreen()}
-          >
-            Assign To Track
-          </Button>
+    <Card
+      sx={{
+        width: '50vw',
+        padding: '2vh',
+      }}
+    >
+      { !editing ?
+        <Typography
+          sx={{
+            width: '45vw',
+            marginLeft: '2.5vw',
+          }}
+        >
+          {props.lyric}
+        </Typography>
         :
-          null
+        <TextField
+          value={lyric}
+          onChange={(e) => setLyric(e.target.value)}
+          placeholder={props.lyric}
+          multiline
+          rows={5}
+          sx={{
+            width: '100%',
+          }}
+        />
       }
-    </div>
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '1vw',
+          margin: '2vh',
+        }}
+      >
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '1vh',
+            margin: '1vh',
+            width: '100%',
+          }}
+        >
+          {lyricList.map(line => (
+            <Typography className='lyric-line'>{line}</Typography>
+          ))}
+        </div>
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'row',
+            gap: '2vh',
+          }}
+        >
+        { props.onOpenAssignmentScreen ?
+            <Button
+              variant='contained'
+              color='secondary'
+              onClick={() => props.onOpenAssignmentScreen()}
+            >
+              Assign To Track
+            </Button>
+          :
+            null
+        }
+        {
+          !editing ? 
+            <Button
+              onClick={() => setEditing(true)}
+              variant='contained'
+            >
+              Edit
+            </Button>
+          : 
+            <Button
+              onClick={() => saveLyric(lyric)}
+              variant='contained'
+              color='success'
+            >
+              Save
+            </Button>
+        }
+        <Button
+          onClick={() => props.deletelyric()}
+          variant='contained'
+          color='error'
+        >
+          Delete
+        </Button>
+      </div>
+      </div>
+    </Card>
   )
 }
 

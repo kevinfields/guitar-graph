@@ -37,6 +37,7 @@ code {
   display: flex;
   flex-direction: column;
   gap: 2vh;
+  font-family: "Quicksand";
 }
 
 .link {
@@ -115,6 +116,7 @@ code {
   justify-content: space-evenly;
   width: 15vw;
   float: left;
+  margin: 2vh;
 }
 
 .new-note-tab {
