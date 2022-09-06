@@ -15,7 +15,7 @@ const TrackLyricDivided = (props) => {
   return (
     <Card
       sx={{
-        width: '50vw',
+        width: '35vw',
         padding: '2vh',
       }}
     >
@@ -54,7 +54,6 @@ const TrackLyricDivided = (props) => {
             flexDirection: 'column',
             gap: '1vh',
             margin: '1vh',
-            width: '100%',
           }}
         >
           {lyricList.map(line => (

@@ -8,6 +8,7 @@ import ProjectNoteCard from '../components/ProjectNoteCard';
 import QuestionModal from '../components/QuestionModal';
 import TrackLyricDivided from '../components/TrackLyricDivided';
 import makeIdFromTitle from '../functions/makeIdFromTitle';
+import ADJUST_TRACK_ORDER from '../reducers/ADJUST_TRACK_ORDER';
 import ASSIGN_TO_TRACK from '../reducers/ASSIGN_TO_TRACK';
 import CREATE_NEW_SONG from '../reducers/CREATE_NEW_SONG';
 
@@ -25,6 +26,7 @@ const CurrentProjectPage = (props) => {
   const [newNoteScreen, setNewNoteScreen] = useState({open: false, newNote: ''});
   const [newLyricScreen, setNewLyricScreen] = useState({open: false, newLyric: ''});
   const [assignmentScreen, setAssignmentScreen] = useState({open: false, index: -1, type: ''});
+  const [newTrackOrder, setNewTrackOrder] = useState('');
   const [viewing, setViewing] = useState('tracks');
   const navigate = useNavigate();
   const { id } = useParams();
@@ -52,6 +54,8 @@ const CurrentProjectPage = (props) => {
     setProject(data);
     setLyrics(lyrics);
     setNotes(notes);
+
+    tracklist = tracklist.sort((a, b) => a.data.index - b.data.index);
     setTracks(tracklist);
     setLoading(false);
   }
@@ -188,7 +192,19 @@ const CurrentProjectPage = (props) => {
   const assignToTrack = async (trackId) => {
     await ASSIGN_TO_TRACK(props.userRef.collection('projects').doc(id), assignmentScreen.type, assignmentScreen.index, trackId);
     loadProject();
-  }
+  };
+
+  const adjustOrder = async () => {
+
+    if (newTrackOrder.length !== tracks.length) {
+      console.log('sorry, no can do.')
+      return;
+    }
+    await ADJUST_TRACK_ORDER(newTrackOrder.split(''), props.userRef.collection('projects').doc(id)).then(() => {
+      loadProject();
+      setNewTrackOrder('');
+    });
+  };
 
   useEffect(() => {
     loadProject();
@@ -334,6 +350,8 @@ const CurrentProjectPage = (props) => {
                     display: 'flex',
                     flexDirection: 'column',
                     gap: '1vh',
+                    overflowY: 'scroll',
+                    maxHeight: '45vh',
                   }}
                 >
                   {tracks.map(track => (
@@ -344,6 +362,7 @@ const CurrentProjectPage = (props) => {
                         gap: '1vw',
                         marginLeft: '1vw',
                         padding: '1vh',
+                        minHeight: '5vh',
                       }}
                     >
                       <Typography>{track.data.songTitle}</Typography>
@@ -439,16 +458,29 @@ const CurrentProjectPage = (props) => {
               : null
             }
             { viewing === 'tracks' ?
-              <Button
-                onClick={() => setNamingNewSong({open: true, newName: ''})}
-                variant='contained'
-                color='secondary'
-                sx={{
-                  margin: '1vw',
-                }}
-              >
-                Add Track
-              </Button>
+              <>
+                <Button
+                  onClick={() => setNamingNewSong({open: true, newName: ''})}
+                  variant='contained'
+                  color='secondary'
+                  sx={{
+                    margin: '1vw',
+                  }}
+                >
+                  Add Track
+                </Button>
+                <TextField
+                  value={newTrackOrder}
+                  onChange={(e) => setNewTrackOrder(e.target.value)}
+                />
+                <Button 
+                  onClick={() => adjustOrder()}
+                  variant='contained'
+                  color='success'
+                >
+                  Adjust Order
+                </Button>
+              </>
               : viewing === 'notes' ?
               <Button
                 onClick={() => setNewNoteScreen({open: true, newNote: ''})}

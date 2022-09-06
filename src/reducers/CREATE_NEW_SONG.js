@@ -32,5 +32,6 @@ export default async function CREATE_NEW_SONG(projectRef, title) {
     addDate: new Date(),
     notes: [],
     lyrics: [],
+    index: usedIds.length,
   });
 }
