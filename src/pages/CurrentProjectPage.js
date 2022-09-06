@@ -477,6 +477,9 @@ const CurrentProjectPage = (props) => {
                   onClick={() => adjustOrder()}
                   variant='contained'
                   color='success'
+                  sx={{
+                    margin: '1vw',
+                  }}
                 >
                   Adjust Order
                 </Button>
