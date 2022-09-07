@@ -16,6 +16,7 @@ import Navbar from "./components/Navbar";
 import MyProjectsPage from "./pages/MyProjectsPage";
 import CurrentProjectPage from "./pages/CurrentProjectPage";
 import TrackPage from "./pages/TrackPage";
+import PracticePage from "./practice/pages/PracticePage";
 
 
 firebase.initializeApp({
@@ -143,6 +144,12 @@ function App() {
                     <LogoutPage
                       auth={auth}
                     />
+                  }
+                />
+                <Route
+                  path={'/practice-page'}
+                  element={
+                    <PracticePage />
                   }
                 />
               </>

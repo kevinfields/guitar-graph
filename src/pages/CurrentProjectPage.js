@@ -206,6 +206,11 @@ const CurrentProjectPage = (props) => {
     });
   };
 
+  const pickUpTrack = (track) => {
+
+    console.log('track index: ' + track.data.index);
+  }
+
   useEffect(() => {
     loadProject();
   }, []);
@@ -352,77 +357,128 @@ const CurrentProjectPage = (props) => {
                     gap: '1vh',
                     overflowY: 'scroll',
                     maxHeight: '45vh',
+                    border: '1px solid blue',
+                    borderRadius: '5px',
+                    padding: '1vh',
                   }}
                 >
                   {tracks.map(track => (
-                    <Card
-                      sx={{
-                        display: 'flex',
-                        flexDirection: 'row',
-                        gap: '1vw',
-                        marginLeft: '1vw',
-                        padding: '1vh',
-                        minHeight: '5vh',
-                      }}
+                    <div
+                      draggable={true}
                     >
-                      <Typography>{track.data.songTitle}</Typography>
-                      <Button
-                        onClick={() => navigate(`/my-projects/${id}/tracks/${track.id}`)}
-                        variant='contained'
+                      <Card
+                        sx={{
+                          display: 'flex',
+                          flexDirection: 'row',
+                          gap: '1vw',
+                          marginLeft: '1vw',
+                          padding: '1vh',
+                          minHeight: '7vh',
+                          backgroundColor: 'lightblue',
+                        }}
                       >
-                        Open Track Page
-                      </Button>
-                      <Button
-                        onClick={() => setDeletingTrack({open: true, track: track})}
-                        variant='contained'
-                        color='error'
-                      >
-                        Delete
-                      </Button>
-                    </Card>
+                        <Typography>{track.data.songTitle}</Typography>
+                        <Button
+                          onClick={() => navigate(`/my-projects/${id}/tracks/${track.id}`)}
+                          variant='contained'
+                        >
+                          Open Track Page
+                        </Button>
+                        <Button
+                          onClick={() => setDeletingTrack({open: true, track: track})}
+                          variant='contained'
+                          color='error'
+                        >
+                          Delete
+                        </Button>
+                        <Button
+                          onClick={() => pickUpTrack(track)}
+                          variant='outlined'
+                          color='secondary'
+                        >
+                          Move
+                        </Button>
+                      </Card>
+                    </div>
                   ))}
                 </div>
               :
                 <Typography>Add some tracks to get started.</Typography>
             :
               viewing === 'notes' ?
-                notes.map(note => (
-                  <Card>
-                    <ProjectNoteCard
-                      note={note}
-                      saveNote={(newNote) => replaceNote(note, newNote)}
-                      deleteNote={() => deleteNote(note)}
-                      onOpenAssignmentScreen={() => setAssignmentScreen({...assignmentScreen, open: true, type: 'note', index: notes.indexOf(note)})}
-                    />
-                    {assignmentScreen.open && assignmentScreen.type === 'note' && assignmentScreen.index === notes.indexOf(note) ?
-                      <AssignmentScreen
-                        tracklist={tracks}
-                        chooseTrack={(track) => assignToTrack(track.id)}
-                        onClose={() => setAssignmentScreen({...assignmentScreen, open: false})}
+                <div
+                  style={{
+                    maxHeight: '25vh',
+                    overflowY: 'scroll',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: '1vh',
+                    padding: '2vh',
+                  }}
+                >
+                  {notes.map(note => (
+                    <Card
+                      sx={{
+                        border: '1px solid blue',
+                        borderRadius: '5px',
+                        minHeight: '20vh',
+                        overflowY: 'scroll',
+                      }}
+                    >
+                      <ProjectNoteCard
+                        note={note}
+                        saveNote={(newNote) => replaceNote(note, newNote)}
+                        deleteNote={() => deleteNote(note)}
+                        onOpenAssignmentScreen={() => setAssignmentScreen({...assignmentScreen, open: true, type: 'note', index: notes.indexOf(note)})}
                       />
-                      : null
-                    }
-                  </Card>
-                ))
+                      {assignmentScreen.open && assignmentScreen.type === 'note' && assignmentScreen.index === notes.indexOf(note) ?
+                        <AssignmentScreen
+                          tracklist={tracks}
+                          chooseTrack={(track) => assignToTrack(track.id)}
+                          onClose={() => setAssignmentScreen({...assignmentScreen, open: false})}
+                        />
+                        : null
+                      }
+                    </Card>
+                  ))}
+                </div>
             : viewing === 'lyrics' ?
-                lyrics.map(lyric => (
-                  <Card>
-                    <TrackLyricDivided 
-                      verse={lyric}
-                      saveLyric={(newLyric) => replaceLyric(lyric, newLyric)}
-                      deleteLyric={() => deleteLyric(lyric)}
-                      onOpenAssignmentScreen={() => setAssignmentScreen({...assignmentScreen, open: true, type: 'lyric', index: lyrics.indexOf(lyric)})}
-                    />
-                    {assignmentScreen.open && assignmentScreen.type === 'lyric' && assignmentScreen.index === lyrics.indexOf(lyric) ?
-                      <AssignmentScreen
-                        tracklist={tracks}
-                        chooseTrack={(track) => assignToTrack(track.id)}
-                        onClose={() => setAssignmentScreen({...assignmentScreen, open: false})}
+                <div
+                  style={{
+                    maxHeight: '25vh',
+                    overflowY: 'scroll',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: '1vh',
+                    padding: '2vh',
+                  }}
+                >
+                  {lyrics.map(lyric => (
+                    <Card
+                      sx={{
+                        border: '1px solid blue',
+                        borderRadius: '5px',
+                        minHeight: '20vh',
+                        overflowY: 'scroll',
+                      }}
+                    >
+                      <TrackLyricDivided 
+                        verse={lyric}
+                        saveLyric={(newLyric) => replaceLyric(lyric, newLyric)}
+                        deleteLyric={() => deleteLyric(lyric)}
+                        onOpenAssignmentScreen={() => setAssignmentScreen({...assignmentScreen, open: true, type: 'lyric', index: lyrics.indexOf(lyric)})}
                       />
-                      : null
-                    }
-                  </Card>
-                ))
+                      {assignmentScreen.open && assignmentScreen.type === 'lyric' && assignmentScreen.index === lyrics.indexOf(lyric) ?
+                        <AssignmentScreen
+                          tracklist={tracks}
+                          chooseTrack={(track) => assignToTrack(track.id)}
+                          onClose={() => setAssignmentScreen({...assignmentScreen, open: false})}
+                        />
+                        : null
+                      }
+                    </Card>
+                  ))}
+                </div>
             : null
           }
             {
@@ -458,7 +514,11 @@ const CurrentProjectPage = (props) => {
               : null
             }
             { viewing === 'tracks' ?
-              <>
+              <div
+                style={{
+                  margin: '1vh',
+                }}
+              >
                 <Button
                   onClick={() => setNamingNewSong({open: true, newName: ''})}
                   variant='contained'
@@ -483,7 +543,7 @@ const CurrentProjectPage = (props) => {
                 >
                   Adjust Order
                 </Button>
-              </>
+              </div>
               : viewing === 'notes' ?
               <Button
                 onClick={() => setNewNoteScreen({open: true, newNote: ''})}
@@ -516,10 +576,10 @@ const CurrentProjectPage = (props) => {
             container
             columns={12}
             columnSpacing={1}
-            rowSpacing={2}
+            rowSpacing={1}
             sx={{
               marginLeft: '5vw',
-              marginTop: '2vh',
+              marginTop: '1vh',
               width: '61vw',
             }}
           >
@@ -577,7 +637,7 @@ const CurrentProjectPage = (props) => {
             container
             columns={12}
             columnSpacing={0}
-            rowSpacing={2}
+            rowSpacing={1}
             sx={{
               marginLeft: '5vw',
               marginTop: '2vh',
