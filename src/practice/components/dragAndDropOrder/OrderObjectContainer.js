@@ -1,9 +1,14 @@
 import React, {useState} from 'react'
 import OrderObject from './OrderObject'
+import '../../styling/DragAndDrop.css';
 
 const OrderObjectContainer = (props) => {
 
+
+  console.log(JSON.stringify(props));
+
   const [highlit, setHighlit] = useState(false);
+
 
   const dropItem = () => {
     setHighlit(false);
@@ -13,12 +18,9 @@ const OrderObjectContainer = (props) => {
   return (
     <div
       style={{
-        width: '7vw',
-        height: '7vh',
         backgroundColor: highlit ? 'lightblue' : 'white',
-        paddingLeft: '1vw',
-        paddingTop: '1vh',
       }}
+      className={props.slotClassName ? props.slotClassName : null}
       onDrop={() => dropItem()}
       onDragOver={(e) => e.preventDefault()}
       onDragEnter={() => setHighlit(true)}
@@ -28,6 +30,7 @@ const OrderObjectContainer = (props) => {
         item={props.item} 
         dragObject={() => props.dragObject(props.item)}
         dragging={props.dragging}
+        objectClassName={props.objectClassName ? props.objectClassName : null}
       />
     </div>
   )

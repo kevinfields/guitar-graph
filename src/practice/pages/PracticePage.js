@@ -1,6 +1,7 @@
 import { Switch } from '@mui/material';
-import React, {useState, useEffect} from 'react'
-import DragAndDropOrder from '../components/dragAndDropOrder/DragAndDropOrder'
+import React, {useState, useEffect} from 'react';
+import DragAndDropOrder from '../components/dragAndDropOrder/DragAndDropOrder';
+import '../styling/DragAndDrop.css';
 
 const PracticePage = (props) => {
 
@@ -13,6 +14,9 @@ const PracticePage = (props) => {
         order={order}
         onAdjustOrder={(newOrder) => setOrder(newOrder)}
         insert={insert}
+        containerClassName='drag-and-drop-container'
+        slotClassName='drag-and-drop-slot'
+        objectClassName='drag-and-drop-object'
       />
       <div
       >

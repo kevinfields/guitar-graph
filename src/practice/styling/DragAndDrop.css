@@ -1,0 +1,26 @@
+.drag-and-drop-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1vh;
+  width: 50vw;
+  height: 70vh;
+  justify-content: space-evenly;
+  overflow-y: scroll;
+}
+
+.drag-and-drop-slot {
+  width: 20vw;
+  height: 12vh;
+  border: 1px solid blue;
+  padding: 1vw;
+}
+
+.drag-and-drop-object {
+  width: 18vw;
+  height: 8vh;
+  border: 1px solid lightblue;
+  background-color: lightblue;
+  color: darkred;
+  text-align: center;
+  font-size: 15pt;
+}

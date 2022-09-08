@@ -40,12 +40,6 @@ const DragAndDropOrder = (props) => {
     let offsetIndex = orderCatcher.indexOf(item);
     let removedIndex = orderCatcher.indexOf(newItem);
 
-
-    console.log(`item: ${item}`);
-    console.log(`newItem: ${newItem}`);
-    console.log(`offsetIndex: ${offsetIndex}`);
-    console.log(`removedIndex: ${removedIndex}`);
-
     if (props.insert) {
 
       // insert mode
@@ -68,11 +62,7 @@ const DragAndDropOrder = (props) => {
 
   return (
     <div
-      style={{
-        display: 'flex',
-        flexDirection: 'column',
-        gap: '1vh',
-      }}
+      className={props.containerClassName ? props.containerClassName : null}
     >
       {props.order.map(item => (
         <OrderObjectContainer 
@@ -81,6 +71,8 @@ const DragAndDropOrder = (props) => {
           placeHere={(newItem) => adjustOrder(newItem, item)} 
           dragObject={() => setDragging(item)}
           dragging={dragging}
+          slotClassName={props.slotClassName ? props.slotClassName : null}
+          objectClassName={props.objectClassName ? props.objectClassName : null}
         />
       ))}
     </div>

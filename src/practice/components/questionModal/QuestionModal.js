@@ -1,5 +1,5 @@
 import { Box, Button, Modal, TextField, Typography } from '@mui/material'
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 
 //THIS COMPONENT IS INTENDED TO DISPLAY A MODAL BLOCKING THE SCREEN WITH A PROMPT TO RESPOND TO
 // There are 4 necessary properties: 
