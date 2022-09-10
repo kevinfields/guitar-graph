@@ -17,6 +17,7 @@ import MyProjectsPage from "./pages/MyProjectsPage";
 import CurrentProjectPage from "./pages/CurrentProjectPage";
 import TrackPage from "./pages/TrackPage";
 import PracticePage from "./practice/pages/PracticePage";
+import AllUsersPage from "./pages/AllUsersPage";
 
 
 firebase.initializeApp({
@@ -135,6 +136,15 @@ function App() {
                       auth={auth}
                       takenNamesRef={firestore.collection('taken_usernames').doc('main_list')}
                       onLogin={() => loginUser()}
+                    />
+                  }
+                />
+                <Route
+                  path={'/all-users'}
+                  element={
+                    <AllUsersPage
+                      user={user}
+                      usersRef={firestore.collection('users')}
                     />
                   }
                 />

@@ -4,9 +4,6 @@ import '../../styling/DragAndDrop.css';
 
 const OrderObjectContainer = (props) => {
 
-
-  console.log(JSON.stringify(props));
-
   const [highlit, setHighlit] = useState(false);
 
 

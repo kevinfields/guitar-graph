@@ -45,7 +45,27 @@ const ProfilePage = (props) => {
 
   useEffect(() => {
     loadUserData();
-  }, [])
+  }, []);
+
+  const receiveNotifications = () => {
+    Notification.requestPermission().then(perm => {
+      if (perm === 'granted') {
+        new Notification('You will now receive push notifications.', {
+          body: 'This cannot be undone, sorry.',
+        });
+      }
+    })
+  };
+
+  const randomNotification = () => {
+    const notif = new Notification('This is a random notification', {
+      body: (Math.floor(Math.random() * 132123) + 1),
+    });
+
+    notif.addEventListener('close', (e) => {
+      console.log(e);
+    })
+  }
 
 
   return (
@@ -112,6 +132,14 @@ const ProfilePage = (props) => {
               maxHeight: '15vw',
             }}
           />
+          <Button
+            onClick={() => randomNotification()}
+            variant='contained'
+            color='secondary'
+          
+          >
+            Receive Push Notifications
+          </Button>
         </Card>
       }
     </div>

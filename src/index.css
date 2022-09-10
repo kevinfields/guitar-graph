@@ -127,3 +127,11 @@ code {
   align-items: baseline;
   justify-content: space-between;
 }
+
+
+.user-list {
+  display: flex;
+  flex-direction: column;
+  gap: 2vh;
+  overflow-y: scroll;
+}

@@ -88,7 +88,7 @@ const GuitarPage = (props) => {
           container
           sx={{
             position: 'fixed',
-            top: '35vh',
+            top: '45vh',
             width: '90vw',
             left: '5vw',
           }}

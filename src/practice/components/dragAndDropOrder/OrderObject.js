@@ -1,8 +1,6 @@
 import React, {useState} from 'react'
 
 const OrderObject = (props) => {
-
-  console.log(JSON.stringify(props))
   
   return (
     <div
