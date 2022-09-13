@@ -108,6 +108,12 @@ code {
   display: flex;
   flex-direction: column;
   gap: 2vh;
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+/* Hide scrollbar for Chrome, Safari and Opera */
+.track-note::-webkit-scrollbar {
+  display: none;
 }
 
 .track-note-buttons {

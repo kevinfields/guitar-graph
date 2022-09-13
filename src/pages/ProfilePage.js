@@ -49,22 +49,18 @@ const ProfilePage = (props) => {
 
   const receiveNotifications = () => {
     Notification.requestPermission().then(perm => {
+      alert(perm);
       if (perm === 'granted') {
-        new Notification('You will now receive push notifications.', {
-          body: 'This cannot be undone, sorry.',
-        });
+        const notif = new Notification('This is a random notification', {
+          body: (Math.floor(Math.random() * 132123) + 1),
+          onShow: () => console.log('showing'),
+        })
       }
     })
   };
 
   const randomNotification = () => {
-    const notif = new Notification('This is a random notification', {
-      body: (Math.floor(Math.random() * 132123) + 1),
-    });
-
-    notif.addEventListener('close', (e) => {
-      console.log(e);
-    })
+    
   }
 
 
@@ -133,12 +129,19 @@ const ProfilePage = (props) => {
             }}
           />
           <Button
+            onClick={() => receiveNotifications()}
+            variant='contained'
+            color='primary'
+          >
+            Receive Push Notificiations
+          </Button>
+          <Button
             onClick={() => randomNotification()}
             variant='contained'
             color='secondary'
           
           >
-            Receive Push Notifications
+            Receive Notification
           </Button>
         </Card>
       }

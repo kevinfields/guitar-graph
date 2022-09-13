@@ -6,6 +6,12 @@
   height: 70vh;
   justify-content: space-evenly;
   overflow-y: scroll;
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
+.drag-and-drop-container::-webkit-scrollbar {
+  display: none;
 }
 
 .drag-and-drop-slot {

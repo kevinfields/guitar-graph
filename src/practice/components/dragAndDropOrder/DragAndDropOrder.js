@@ -73,6 +73,7 @@ const DragAndDropOrder = (props) => {
           dragging={dragging}
           slotClassName={props.slotClassName ? props.slotClassName : null}
           objectClassName={props.objectClassName ? props.objectClassName : null}
+          children={props.children}
         />
       ))}
     </div>

@@ -1,6 +1,7 @@
 import { Switch } from '@mui/material';
 import React, {useState, useEffect} from 'react';
 import DragAndDropOrder from '../components/dragAndDropOrder/DragAndDropOrder';
+import LinkedListGenerator from '../components/linkedListGenerator/LinkedListGenerator';
 import '../styling/DragAndDrop.css';
 
 const PracticePage = (props) => {
@@ -35,6 +36,17 @@ const PracticePage = (props) => {
             Swap Mode
           </div>
         }
+      </div>
+      <div
+        style={{
+          position: 'fixed',
+          left: '40vw',
+          top: '20vh',
+          width: '35vw',
+          height: '50vh',
+        }}
+      >
+        <LinkedListGenerator />
       </div>
     </div>
   )

@@ -28,6 +28,7 @@ const OrderObjectContainer = (props) => {
         dragObject={() => props.dragObject(props.item)}
         dragging={props.dragging}
         objectClassName={props.objectClassName ? props.objectClassName : null}
+        children={props.children}
       />
     </div>
   )
