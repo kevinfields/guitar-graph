@@ -1,6 +1,7 @@
 import { Switch } from '@mui/material';
 import React, {useState, useEffect} from 'react';
 import DragAndDropOrder from '../components/dragAndDropOrder/DragAndDropOrder';
+import GenerationsScreen from '../components/generations/GenerationsScreen';
 import LinkedListGenerator from '../components/linkedListGenerator/LinkedListGenerator';
 import '../styling/DragAndDrop.css';
 
@@ -47,6 +48,17 @@ const PracticePage = (props) => {
         }}
       >
         <LinkedListGenerator />
+      </div>
+      <div
+        style={{
+          position: 'fixed',
+          left: '40vw',
+          top: '60vh',
+          width: '35vw',
+          height: '40vh',
+        }}
+      >
+        <GenerationsScreen />
       </div>
     </div>
   )
