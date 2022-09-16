@@ -20,3 +20,23 @@
   border-radius: 10px;
   box-shadow: 1px 1px 1px 1px rgb(52, 52, 66);
 }
+
+
+.generation-screen-control-input {
+  color: white;
+  width: 2vw;
+  height: 2vh;
+  position: fixed;
+  top: 5vh;
+  left: 49vw;
+}
+
+.resource {
+  border: 1px solid green;
+  background-color: lightgreen;
+  width: 2.5vw;
+  height: 2.5vw;
+  font-size: 6pt;
+  text-align: center;
+  border-radius: 4px;
+}

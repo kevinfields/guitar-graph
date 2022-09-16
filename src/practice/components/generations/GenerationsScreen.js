@@ -1,6 +1,9 @@
-
 import React, {useState, useEffect, useRef} from 'react'
+import Loading from '../../../components/Loading';
+import getDividedResources from '../../functions/getDividedResources';
+import checkCollision from '../../functions/checkCollision';
 import Generation from './Generation'
+import Resource from './Resource';
 
 const GenerationsScreen = () => {
 
@@ -8,9 +11,17 @@ const GenerationsScreen = () => {
     x: 50,
     y: 50,
   });
-
+  const [resources, setResources] = useState([]);
+  const [neighbors, setNeighbors] = useState([]);
   const [controlInput, setControlInput] = useState('');
+  const [loading, setLoading] = useState(true);
   const dummy = useRef();
+
+
+  const loadGameObjects = () => {
+    setResources(getDividedResources('food', 1000, 5));
+    
+  };
 
   useEffect(() => {
 
@@ -37,6 +48,10 @@ const GenerationsScreen = () => {
 
   useEffect(() => {
 
+    if (checkCollision({x: resources[0].x, y: resources[0].y}, position)) {
+      alert('You crashed');
+    };
+    
     if (position.x > 80) {
       setPosition({
         ...position,
@@ -68,29 +83,44 @@ const GenerationsScreen = () => {
   }, [position]);
 
   useEffect(() => {
+
+    loadGameObjects();
     dummy.current.focus();
-  }, [])
+    setLoading(false);
+
+  }, []);
+
+  useEffect(() => {
+    if (resources.length > 0) {
+      console.log('resource position: ' + resources[0].x + ' , ' + resources[0].y);
+    };
+  }, [resources]);
 
 
   
   return (
     <div className='generation-screen'>
-      <Generation 
-        position={position}
-      />
+      {loading ? <Loading /> : 
+        <>
+          <Generation 
+            position={position}
+          />
+          
+          {resources.map(resource => (
+            <Resource
+              resource={resource}
+            />
+          ))}
+        </>
+      }
       <input
+        className='generation-screen-control-input'
         value={controlInput}
         onChange={(e) => setControlInput(e.target.value)}
         ref={dummy}
-        style={{
-          color: 'white',
-          width: '2vw',
-          height: '2vh',
-          position: 'fixed',
-          top: ''
-        }}
       />
     </div>
+
   )
 }
 
