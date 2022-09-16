@@ -18,6 +18,7 @@ import CurrentProjectPage from "./pages/CurrentProjectPage";
 import TrackPage from "./pages/TrackPage";
 import PracticePage from "./practice/pages/PracticePage";
 import AllUsersPage from "./pages/AllUsersPage";
+import GenerationsPage from "./practice/pages/GenerationsPage";
 
 
 firebase.initializeApp({
@@ -160,6 +161,12 @@ function App() {
                   path={'/practice-page'}
                   element={
                     <PracticePage />
+                  }
+                />
+                <Route
+                  path={'/generations'}
+                  element={
+                    <GenerationsPage />
                   }
                 />
               </>
