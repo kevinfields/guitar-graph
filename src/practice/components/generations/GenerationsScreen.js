@@ -4,6 +4,7 @@ import getDividedResources from '../../functions/getDividedResources';
 import checkCollision from '../../functions/checkCollision';
 import Generation from './Generation'
 import Resource from './Resource';
+import checkWithin from '../../functions/checkWithin';
 
 const GenerationsScreen = () => {
 
@@ -20,7 +21,6 @@ const GenerationsScreen = () => {
 
   const loadGameObjects = () => {
     setResources(getDividedResources('food', 1000, 5));
-    
   };
 
   useEffect(() => {
@@ -48,8 +48,11 @@ const GenerationsScreen = () => {
 
   useEffect(() => {
 
-    if (checkCollision({x: resources[0].x, y: resources[0].y}, position)) {
-      alert('You crashed');
+
+    if (resources.length > 0) {
+      if (checkWithin(position, {x: resources[0].x, y: resources[0].y})) {
+        alert('You crashed');
+      };
     };
     
     if (position.x > 80) {
