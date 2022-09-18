@@ -13,6 +13,7 @@ const GenerationsScreen = () => {
     y: 50,
   });
   const [resources, setResources] = useState([]);
+  const [health, setHealth] = useState(10);
   const [neighbors, setNeighbors] = useState([]);
   const [controlInput, setControlInput] = useState('');
   const [loading, setLoading] = useState(true);
@@ -22,6 +23,16 @@ const GenerationsScreen = () => {
   const loadGameObjects = () => {
     setResources(getDividedResources('food', 1000, 5));
   };
+
+  const takeResource = (taken) => {
+    let catcher = [...resources];
+    let takenResource = catcher.find(resource => resource.value === taken.value);
+    let index = catcher.indexOf(takenResource);
+    catcher.splice(index, 1);
+    setResources(catcher);
+    setHealth(health + taken.value);
+    console.log('taken: ' + JSON.stringify(taken));
+  }
 
   useEffect(() => {
 
@@ -51,7 +62,8 @@ const GenerationsScreen = () => {
 
     if (resources.length > 0) {
       if (checkWithin(position, {x: resources[0].x, y: resources[0].y})) {
-        alert('You crashed');
+        console.log('is within');
+        takeResource(resources[0]);
       };
     };
     
@@ -107,6 +119,7 @@ const GenerationsScreen = () => {
         <>
           <Generation 
             position={position}
+            heatlh={health}
           />
           
           {resources.map(resource => (
