@@ -13,6 +13,7 @@ const GenerationsScreen = () => {
     y: 50,
   });
   const [resources, setResources] = useState([]);
+  const [age, setAge] = useState(1);
   const [health, setHealth] = useState(10);
   const [neighbors, setNeighbors] = useState([]);
   const [controlInput, setControlInput] = useState('');
@@ -21,7 +22,7 @@ const GenerationsScreen = () => {
 
 
   const loadGameObjects = () => {
-    setResources(getDividedResources('food', 1000, 5));
+    setResources(getDividedResources('food', 100, 5));
   };
 
   const takeResource = (taken) => {
@@ -31,8 +32,7 @@ const GenerationsScreen = () => {
     catcher.splice(index, 1);
     setResources(catcher);
     setHealth(health + taken.value);
-    console.log('taken: ' + JSON.stringify(taken));
-  }
+  };
 
   useEffect(() => {
 
@@ -62,7 +62,6 @@ const GenerationsScreen = () => {
 
     if (resources.length > 0) {
       if (checkWithin(position, {x: resources[0].x, y: resources[0].y})) {
-        console.log('is within');
         takeResource(resources[0]);
       };
     };
@@ -98,16 +97,19 @@ const GenerationsScreen = () => {
   }, [position]);
 
   useEffect(() => {
-
     loadGameObjects();
     dummy.current.focus();
     setLoading(false);
-
   }, []);
 
   useEffect(() => {
     if (resources.length > 0) {
       console.log('resource position: ' + resources[0].x + ' , ' + resources[0].y);
+      console.log('resource[0]: ' + JSON.stringify(resources[0]));
+    } else if (!loading && resources.length === 0) {
+      setAge(age + 1);
+      setHealth(health + 50);
+      setResources(getDividedResources('food', 100, 5));
     };
   }, [resources]);
 
@@ -120,6 +122,12 @@ const GenerationsScreen = () => {
           <Generation 
             position={position}
             heatlh={health}
+            gen={{
+              position: position,
+              age: age,
+              health: health,
+              power: 10,
+            }}
           />
           
           {resources.map(resource => (

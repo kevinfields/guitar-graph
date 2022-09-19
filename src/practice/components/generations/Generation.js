@@ -1,22 +1,23 @@
 import React, {useState, useEffect} from 'react'
+import getBorderStyle from '../../functions/getBorderStyle';
 
 const Generation = (props) => {
 
-  const [age, setAge] = useState(0);
-  const [power, setPower] = useState(0);
+
 
   return (
     <div
       className='generation'
       style={{
         position: 'fixed',
-        left: `${props.position.x}vw`,
-        top: `${props.position.y}vh`,
+        left: `${props.gen.position.x}vw`,
+        top: `${props.gen.position.y}vh`,
+        borderInline: getBorderStyle(props.gen),
       }}
     >
-      <p>Age: {age}</p>
-      <p>Power: {power}</p>
-      <p>Position: {props.position.x} , {props.position.y}</p>
+      <p>Age: {props.gen.age}</p>
+      <p>Health: {props.gen.health}</p>
+      <p>Power: {props.gen.power}</p>
     </div>
   )
 }

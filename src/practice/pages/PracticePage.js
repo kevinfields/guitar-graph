@@ -49,17 +49,7 @@ const PracticePage = (props) => {
       >
         <LinkedListGenerator />
       </div>
-      <div
-        style={{
-          position: 'fixed',
-          left: '40vw',
-          top: '60vh',
-          width: '35vw',
-          height: '40vh',
-        }}
-      >
-        <GenerationsScreen />
-      </div>
+      
     </div>
   )
 }
