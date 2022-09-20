@@ -1,4 +1,4 @@
-import { TextField } from '@mui/material';
+import { Button, TextField } from '@mui/material';
 import React, {useState, useEffect, useRef} from 'react';
 import Loading from '../../components/Loading';
 import changeGrid from '../functions/changeGrid';
@@ -13,6 +13,7 @@ const GridGameBoard = (props) => {
   const [grid, setGrid] = useState({});
   const [rows, setRows] = useState([]);
   const [controlInput, setControlInput] = useState('');
+  const [obstacleToMove, setObstacleToMove] = useState(0);
   const dummy = useRef();
 
   const loadGridObject = () => {
@@ -31,16 +32,39 @@ const GridGameBoard = (props) => {
 
   const movePlayer = (direction) => {
 
+    let newGrid;
     switch (direction) {
       case 'w':
-        let newGrid = changeGrid(grid, 'up', 'PLAYER');
+        newGrid = changeGrid(grid, 'up', 'PLAYER', 12);
+        setGrid(newGrid);
+        parseGridObj(newGrid);
+        break;
+      case 's':
+        newGrid = changeGrid(grid, 'down', 'PLAYER', 12);
+        setGrid(newGrid);
+        parseGridObj(newGrid);
+        break;
+      case 'a':
+        newGrid = changeGrid(grid, 'left', 'PLAYER', 12);
+        setGrid(newGrid);
+        parseGridObj(newGrid);
+        break;
+      case 'd':
+        newGrid = changeGrid(grid, 'right', 'PLAYER', 12);
         setGrid(newGrid);
         parseGridObj(newGrid);
         break;
       default:
         break;
-    }
-  }
+    };
+  };
+
+  const moveObstacle = () => {
+    let newGrid;
+    newGrid = changeGrid(grid, 'right', `OBS${obstacleToMove}`, 12);
+    setGrid(newGrid);
+    parseGridObj(newGrid);
+  };
 
   useEffect(() => {
     loadGridObject();
@@ -78,7 +102,7 @@ const GridGameBoard = (props) => {
             }}
           >
             {rows.map(row => (
-              <GridGameRow row={row} key={Math.floor(Math.random() * 100000)}/>
+              <GridGameRow row={row} key={Math.floor(Math.random() * 1000000)}/>
             ))} 
           </div>
           <div className='grid-game-controller'>
@@ -93,6 +117,18 @@ const GridGameBoard = (props) => {
                 border: '1px solid white',
               }}
             />
+            <input
+              type='number'
+              value={obstacleToMove}
+              onChange={(e) => setObstacleToMove(e.target.value)}
+            />
+            <Button
+              variant='contained'
+              color='primary'
+              onClick={() => moveObstacle()}
+            >
+              Move selected obstacle to the right.
+            </Button>
           </div>
         </div>
       }

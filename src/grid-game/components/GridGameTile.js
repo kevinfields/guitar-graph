@@ -4,15 +4,15 @@ const GridGameTile = (props) => {
 
   return (
     <div 
-      className='grid-game-tile'
+      className={`grid-game-tile-${props.tile.currentOccupantId}`}
       style={{
         width: '5vh',
         height: '5vh',
         border: '1px solid black',
-        fontSize: '8pt',
+        fontSize: '7pt',
       }}
     >
-      {props.tile.currentOccupantId} | {props.tile.coordinates}
+      {props.tile.currentOccupantId}
     </div>
   )
 }
