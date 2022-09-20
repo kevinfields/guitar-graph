@@ -2,10 +2,36 @@
   border: 1px solid blue;
 }
 
+.grid-game-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25vh;
+}
+
+.grid-game-row {
+  display: flex;
+  flex-direction: row;
+  gap: 0.25vh;
+}
+
 .grid-game-controller {
   position: fixed;
   left: 70vw;
   top: 15vh;
+}
+
+.grid-game-control-input {
+  width: 5vw;
+  color: white;
+  caret-color: transparent;
+  border: 1px solid white;
+}
+
+[class^="grid-game-tile-"] {
+  width: 6.5vh;
+  height: 6.5vh;
+  border: 1px solid black;
+  font-size: 7pt;
 }
 
 .grid-game-tile-PLAYER {
@@ -13,7 +39,7 @@
   color: red;
 }
 
-.grid-game-tile-OBSTACLE {
+[class^="grid-game-tile-OBS"] {
   background-color: red;
   color: white;
 }

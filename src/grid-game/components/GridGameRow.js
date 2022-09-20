@@ -6,9 +6,7 @@ const GridGameRow = (props) => {
     <div
       className='grid-game-row'
       style={{
-        display: 'flex',
-        flexDirection: 'row',
-        gap: '1vw',
+        
       }}
     >
       {props.row.map(item => (

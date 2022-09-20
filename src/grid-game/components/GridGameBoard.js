@@ -5,7 +5,6 @@ import changeGrid from '../functions/changeGrid';
 import loadGrid from '../functions/loadGrid';
 import parseGrid from '../functions/parseGrid';
 import GridGameRow from './GridGameRow';
-import GridGameTile from './GridGameTile';
 
 const GridGameBoard = (props) => {
 
@@ -93,14 +92,7 @@ const GridGameBoard = (props) => {
         loading ? <Loading /> 
         :
         <div className='main-game'>
-          <div
-            className='grid-game-grid'
-            style={{
-              display: 'flex',
-              flexDirection: 'column',
-              gap: '1vw',
-            }}
-          >
+          <div className='grid-game-grid'>
             {rows.map(row => (
               <GridGameRow row={row} key={Math.floor(Math.random() * 1000000)}/>
             ))} 
@@ -110,12 +102,7 @@ const GridGameBoard = (props) => {
               value={controlInput}
               onChange={(e) => setControlInput(e.target.value)}
               ref={dummy}
-              style={{
-                width: '5vw',
-                color: 'white',
-                caretColor: 'transparent',
-                border: '1px solid white',
-              }}
+              className='grid-game-control-input'
             />
             <input
               type='number'
