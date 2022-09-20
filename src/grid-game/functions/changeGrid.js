@@ -3,7 +3,20 @@ const ALPHABET = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm
 export default function changeGrid(grid, direction, occupantId) {
 
 
-  // console.log('grid: ' + JSON.stringify(grid));
+  function allowMovement(coords, dir) {
+
+    switch (dir) {
+      case 'up':
+        if (Number(coords.x) > 0) {
+          return true;
+        };
+        break;
+      default:
+        break;
+    };
+
+    return false;
+  }
 
   let occupantCurrentCoord = {x: '0', y: '0'};
 
@@ -17,9 +30,14 @@ export default function changeGrid(grid, direction, occupantId) {
         occupantCurrentCoord.x = grid[row][item].coordinates.split('.')[0];
         occupantCurrentCoord.y = grid[row][item].coordinates.split('.')[1];
         console.log('found occupant at coordinates: ' + occupantCurrentCoord.x + '.|.' + occupantCurrentCoord.y);
-        newGrid[row][item] = {
-          ...grid[row][item],
-          currentOccupantId: '',
+
+        if (allowMovement(occupantCurrentCoord, direction)) {
+          newGrid[row][item] = {
+            ...grid[row][item],
+            currentOccupantId: '',
+          };
+        } else {
+          return grid;
         };
       };
     };
