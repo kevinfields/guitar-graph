@@ -2,8 +2,6 @@ const COLORS = ['LightSkyBlue', 'Blue', 'DarkBlue', 'Indigo', 'DarkViolet', 'Med
 
 export default function getBorderStyle(stats) {
   
-  let style = '';
-
 
   let width = Math.ceil(stats.health / 100);
 

@@ -1,0 +1,9 @@
+.main-game {
+  border: 1px solid blue;
+}
+
+.grid-game-controller {
+  position: fixed;
+  left: 70vw;
+  top: 15vh;
+}

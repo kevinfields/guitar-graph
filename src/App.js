@@ -19,6 +19,7 @@ import TrackPage from "./pages/TrackPage";
 import PracticePage from "./practice/pages/PracticePage";
 import AllUsersPage from "./pages/AllUsersPage";
 import GenerationsPage from "./practice/pages/GenerationsPage";
+import GridGamePage from "./grid-game/GridGamePage";
 
 
 firebase.initializeApp({
@@ -167,6 +168,12 @@ function App() {
                   path={'/generations'}
                   element={
                     <GenerationsPage />
+                  }
+                />
+                <Route
+                  path={'/grid-game'}
+                  element={
+                    <GridGamePage />
                   }
                 />
               </>

@@ -14,6 +14,7 @@ const Navbar = (props) => {
         <Link to='/guitar-graph'>Guitar Graph</Link>
         <Link to='/practice-page'>Practice Page</Link>
         <Link to='/generations'>Generations Page</Link>
+        <Link to='/grid-game'>Grid Game</Link>
         <Link to='/all-users'>All Users</Link>
         <Link to='/logout'>Logout</Link>
       </div>

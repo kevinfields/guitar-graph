@@ -8,8 +8,8 @@ export default function getDividedResources(type, totalValue, divideBy) {
     dividedArray.push({
       type: type,
       value: randomValue,
-      y: Math.floor(Math.random() * (72.25)) + 11,
-      x: Math.floor(Math.random() * 67.5) + 15,
+      y: Math.floor(Math.random() * (70.25)) + 12,
+      x: Math.floor(Math.random() * 65.5) + 16,
     });
     remainder -= randomValue;
   };

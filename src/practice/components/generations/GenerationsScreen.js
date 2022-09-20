@@ -113,6 +113,17 @@ const GenerationsScreen = () => {
     };
   }, [resources]);
 
+  useEffect(() => {
+
+    if (age >= 7) {
+      setAge(1);
+      setPosition({x: 50, y: 50});
+      setResources(getDividedResources('food', 100, 5));
+      setHealth(10);
+    };
+
+  }, [age]);
+
 
   
   return (

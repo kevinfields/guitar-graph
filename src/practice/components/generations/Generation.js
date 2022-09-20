@@ -12,7 +12,7 @@ const Generation = (props) => {
         position: 'fixed',
         left: `${props.gen.position.x}vw`,
         top: `${props.gen.position.y}vh`,
-        borderInline: getBorderStyle(props.gen),
+        border: getBorderStyle(props.gen),
       }}
     >
       <p>Age: {props.gen.age}</p>
