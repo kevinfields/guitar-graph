@@ -178,10 +178,10 @@ const GridGameBoard = (props) => {
             <Button
               variant='contained'
               color='primary'
-              onClick={() => {dummy.current.focus()}}
+              onClick={() => loadGridObject()}
               className='game-button'
             >
-              If you cannot control your player, click here
+              Reset
             </Button>
           </div>
         </div>

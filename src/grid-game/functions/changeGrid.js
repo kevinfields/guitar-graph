@@ -4,7 +4,7 @@ const ALPHABET = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm
 
 export default function changeGrid(grid, direction, occupantId, gridLength) {
 
-  let removedObstacles = [];
+  
 
 
   function allowMovement(coords, dir) {
@@ -39,6 +39,7 @@ export default function changeGrid(grid, direction, occupantId, gridLength) {
 
   let occupantCurrentCoord = {x: '0', y: '0'};
   let newGrid = {...grid};
+  let removedObstacles = [];
 
   for (const row in grid) {
     for (const item in grid[row]) {
@@ -77,6 +78,11 @@ export default function changeGrid(grid, direction, occupantId, gridLength) {
           currentOccupantId: occupantId,
         };
         removedObstacles.push(newTile.currentOccupantId); 
+      } else {
+        newGrid[ALPHABET[Number(occupantCurrentCoord.x)]][ALPHABET[Number(occupantCurrentCoord.y) - 1]] = {
+          ...newGrid[ALPHABET[Number(occupantCurrentCoord.x)]][ALPHABET[Number(occupantCurrentCoord.y) - 1]],
+          currentOccupantId: newTile.currentOccupantId,
+        };
       };
       break;
     case 'down':
@@ -95,24 +101,34 @@ export default function changeGrid(grid, direction, occupantId, gridLength) {
           currentOccupantId: occupantId,
         };
         removedObstacles.push(newTile.currentOccupantId);
+      } else {
+        newGrid[ALPHABET[Number(occupantCurrentCoord.x) + 1]][ALPHABET[Number(occupantCurrentCoord.y) - 1]] = {
+          ...newGrid[ALPHABET[Number(occupantCurrentCoord.x) + 1]][ALPHABET[Number(occupantCurrentCoord.y) - 1]],
+          currentOccupantId: newTile.currentOccupantId,
+        };
       }
       break;
     case 'left':
       newTile = newGrid[ALPHABET[Number(occupantCurrentCoord.x)]][ALPHABET[Number(occupantCurrentCoord.y) - 1]];
       result = getInteraction(newTile.currentOccupantId, occupantId);
       if (result === 'none') {
-        newGrid[ALPHABET[Number(occupantCurrentCoord.x)]][ALPHABET[Number(occupantCurrentCoord.y) -1]] = {
+        newGrid[ALPHABET[Number(occupantCurrentCoord.x)]][ALPHABET[Number(occupantCurrentCoord.y) - 1]] = {
           ...newGrid[ALPHABET[Number(occupantCurrentCoord.x)]][ALPHABET[Number(occupantCurrentCoord.y) - 1]],
           currentOccupantId: occupantId,
         };
       } else if (result.substring(0, 3) === 'col') {
         return {empty: true};
       } else if (result.substring(0, 3) === 'com') {
-        newGrid[ALPHABET[Number(occupantCurrentCoord.x)]][ALPHABET[Number(occupantCurrentCoord.y) -1]] = {
+        newGrid[ALPHABET[Number(occupantCurrentCoord.x)]][ALPHABET[Number(occupantCurrentCoord.y) - 1]] = {
           ...newGrid[ALPHABET[Number(occupantCurrentCoord.x)]][ALPHABET[Number(occupantCurrentCoord.y) - 1]],
           currentOccupantId: occupantId,
         };
         removedObstacles.push(newTile.currentOccupantId);
+      } else {
+        newGrid[ALPHABET[Number(occupantCurrentCoord.x)]][ALPHABET[Number(occupantCurrentCoord.y) - 1]] = {
+          ...newGrid[ALPHABET[Number(occupantCurrentCoord.x)]][ALPHABET[Number(occupantCurrentCoord.y) - 1]],
+          currentOccupantId: newTile.currentOccupantId,
+        };
       }
       break;
     case 'right':
@@ -131,13 +147,21 @@ export default function changeGrid(grid, direction, occupantId, gridLength) {
           currentOccupantId: occupantId,
         };
         removedObstacles.push(newTile.currentOccupantId);
+      } else {
+        newGrid[ALPHABET[Number(occupantCurrentCoord.x)]][ALPHABET[Number(occupantCurrentCoord.y) + 1]] = {
+          ...newGrid[ALPHABET[Number(occupantCurrentCoord.x)]][ALPHABET[Number(occupantCurrentCoord.y) + 1]],
+          currentOccupantId: newTile.currentOccupantId,
+        };
       }
       break;
     default:
       break;
   };
 
-  newGrid.removedObstacles.concat(removedObstacles);
+  newGrid = {
+    ...newGrid,
+    removedObstacles: newGrid.removedObstacles.concat(removedObstacles),
+  };
 
   console.log(JSON.stringify(newGrid));
   return newGrid;
