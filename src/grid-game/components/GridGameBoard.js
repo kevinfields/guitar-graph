@@ -38,6 +38,10 @@ const GridGameBoard = (props) => {
     }, [2000]);
   };
 
+  const generalClickCommand = () => {
+    dummy.current.focus();
+  }
+
   const movePlayer = (direction) => {
 
     let newGrid;
@@ -150,16 +154,16 @@ const GridGameBoard = (props) => {
         loading ? <Loading /> 
         :
         <div className='main-game'>
-          <div className='grid-game-grid'>
+          <div className='grid-game-grid' onClick={() => {dummy.current.focus()}}>
             {rows.map(row => (
-              <GridGameRow row={row} key={Math.floor(Math.random() * 1000000)}/>
+              <GridGameRow row={row} key={Math.floor(Math.random() * 150000)}/>
             ))} 
           </div>
           {/* <div className='game-scoreboard'>
             <h3>Scoreboard'</h3>
             <p>Round: {round}</p>
           </div> */}
-          <div className='grid-game-controller'>
+          <div className='grid-game-controller' onClick={() => {dummy.current.focus()}}>
             <input 
               value={controlInput}
               onChange={(e) => setControlInput(e.target.value)}
@@ -174,10 +178,10 @@ const GridGameBoard = (props) => {
             <Button
               variant='contained'
               color='primary'
-              onClick={() => moveObstacle()}
+              onClick={() => {dummy.current.focus()}}
               className='game-button'
             >
-              Move selected obstacle to the right.
+              If you cannot control your player, click here
             </Button>
           </div>
         </div>

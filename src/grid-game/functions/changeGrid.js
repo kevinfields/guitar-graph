@@ -77,7 +77,7 @@ export default function changeGrid(grid, direction, occupantId, gridLength) {
           currentOccupantId: occupantId,
         };
         removedObstacles.push(newTile.currentOccupantId); 
-      }
+      };
       break;
     case 'down':
       newTile = newGrid[ALPHABET[Number(occupantCurrentCoord.x) + 1]][ALPHABET[Number(occupantCurrentCoord.y)]];
