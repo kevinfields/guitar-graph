@@ -22,7 +22,7 @@ export default function getInteraction(nId, fId) {
       break;
     case 'OBS':
       if (nTag === 'OBS') {
-        // obstacle moves on to obstacle
+        return 'combination';
       } else if (nTag === 'INV') {
         // obstacle moves on to inventory item
       };

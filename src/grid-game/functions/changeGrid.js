@@ -4,6 +4,8 @@ const ALPHABET = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm
 
 export default function changeGrid(grid, direction, occupantId, gridLength) {
 
+  let removedObstacles = [];
+
 
   function allowMovement(coords, dir) {
 
@@ -69,7 +71,13 @@ export default function changeGrid(grid, direction, occupantId, gridLength) {
         };
       } else if (result.substring(0, 3) === 'col') {
         return {empty: true};
-      } 
+      } else if (result.substring(0, 3) === 'com') {
+        newGrid[ALPHABET[Number(occupantCurrentCoord.x) - 1]][ALPHABET[Number(occupantCurrentCoord.y)]] = {
+          ...newGrid[ALPHABET[Number(occupantCurrentCoord.x) - 1]][ALPHABET[Number(occupantCurrentCoord.y)]],
+          currentOccupantId: occupantId,
+        };
+        removedObstacles.push(newTile.currentOccupantId); 
+      }
       break;
     case 'down':
       newTile = newGrid[ALPHABET[Number(occupantCurrentCoord.x) + 1]][ALPHABET[Number(occupantCurrentCoord.y)]];
@@ -81,7 +89,13 @@ export default function changeGrid(grid, direction, occupantId, gridLength) {
         };
       } else if (result.substring(0, 3) === 'col') {
         return {empty: true};
-      };
+      } else if (result.substring(0, 3) === 'com') {
+        newGrid[ALPHABET[Number(occupantCurrentCoord.x) + 1]][ALPHABET[Number(occupantCurrentCoord.y)]] = {
+          ...newGrid[ALPHABET[Number(occupantCurrentCoord.x) + 1]][ALPHABET[Number(occupantCurrentCoord.y)]],
+          currentOccupantId: occupantId,
+        };
+        removedObstacles.push(newTile.currentOccupantId);
+      }
       break;
     case 'left':
       newTile = newGrid[ALPHABET[Number(occupantCurrentCoord.x)]][ALPHABET[Number(occupantCurrentCoord.y) - 1]];
@@ -93,7 +107,13 @@ export default function changeGrid(grid, direction, occupantId, gridLength) {
         };
       } else if (result.substring(0, 3) === 'col') {
         return {empty: true};
-      };
+      } else if (result.substring(0, 3) === 'com') {
+        newGrid[ALPHABET[Number(occupantCurrentCoord.x)]][ALPHABET[Number(occupantCurrentCoord.y) -1]] = {
+          ...newGrid[ALPHABET[Number(occupantCurrentCoord.x)]][ALPHABET[Number(occupantCurrentCoord.y) - 1]],
+          currentOccupantId: occupantId,
+        };
+        removedObstacles.push(newTile.currentOccupantId);
+      }
       break;
     case 'right':
       newTile = newGrid[ALPHABET[Number(occupantCurrentCoord.x)]][ALPHABET[Number(occupantCurrentCoord.y) + 1]];
@@ -105,12 +125,20 @@ export default function changeGrid(grid, direction, occupantId, gridLength) {
         };
       } else if (result.substring(0, 3) === 'col') {
         return {empty: true};
-      };
+      } else if (result.substring(0, 3) === 'com') {
+        newGrid[ALPHABET[Number(occupantCurrentCoord.x)]][ALPHABET[Number(occupantCurrentCoord.y) + 1]] = {
+          ...newGrid[ALPHABET[Number(occupantCurrentCoord.x)]][ALPHABET[Number(occupantCurrentCoord.y) + 1]],
+          currentOccupantId: occupantId,
+        };
+        removedObstacles.push(newTile.currentOccupantId);
+      }
       break;
     default:
       break;
   };
 
+  newGrid.removedObstacles.concat(removedObstacles);
 
+  console.log(JSON.stringify(newGrid));
   return newGrid;
 }

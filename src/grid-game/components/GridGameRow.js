@@ -10,7 +10,7 @@ const GridGameRow = (props) => {
       }}
     >
       {props.row.map(item => (
-        <GridGameTile tile={item} key={Math.floor(Math.random() * 10000)}/>
+        <GridGameTile tile={item} key={Math.random()}/>
       ))}
     </div>
   )
