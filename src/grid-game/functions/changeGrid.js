@@ -1,3 +1,5 @@
+import getInteraction from "./getInteraction";
+
 const ALPHABET = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p'];
 
 export default function changeGrid(grid, direction, occupantId, gridLength) {
@@ -41,8 +43,6 @@ export default function changeGrid(grid, direction, occupantId, gridLength) {
       if (grid[row][item].currentOccupantId === occupantId) {
         occupantCurrentCoord.x = grid[row][item].coordinates.split('.')[0];
         occupantCurrentCoord.y = grid[row][item].coordinates.split('.')[1];
-        console.log('found occupant at coordinates: ' + occupantCurrentCoord.x + '.|.' + occupantCurrentCoord.y);
-
         if (allowMovement(occupantCurrentCoord, direction)) {
           newGrid[row][item] = {
             ...grid[row][item],
@@ -55,26 +55,35 @@ export default function changeGrid(grid, direction, occupantId, gridLength) {
     };
   };
 
+  let newTile;
   switch (direction) {
     case 'up':
+      newTile = newGrid[ALPHABET[Number(occupantCurrentCoord.x) - 1]][ALPHABET[Number(occupantCurrentCoord.y)]];
+      console.log(getInteraction(newTile.currentOccupantId, occupantId));
       newGrid[ALPHABET[Number(occupantCurrentCoord.x) - 1]][ALPHABET[Number(occupantCurrentCoord.y)]] = {
         ...newGrid[ALPHABET[Number(occupantCurrentCoord.x) - 1]][ALPHABET[Number(occupantCurrentCoord.y)]],
         currentOccupantId: occupantId,
       };
       break;
     case 'down':
+      newTile = newGrid[ALPHABET[Number(occupantCurrentCoord.x) + 1]][ALPHABET[Number(occupantCurrentCoord.y)]];
+      console.log(getInteraction(newTile.currentOccupantId, occupantId));
       newGrid[ALPHABET[Number(occupantCurrentCoord.x) + 1]][ALPHABET[Number(occupantCurrentCoord.y)]] = {
         ...newGrid[ALPHABET[Number(occupantCurrentCoord.x) + 1]][ALPHABET[Number(occupantCurrentCoord.y)]],
         currentOccupantId: occupantId,
       };
       break;
     case 'left':
+      newTile = newGrid[ALPHABET[Number(occupantCurrentCoord.y) - 1]][ALPHABET[Number(occupantCurrentCoord.y)]];
+      console.log(getInteraction(newTile.currentOccupantId, occupantId));
       newGrid[ALPHABET[Number(occupantCurrentCoord.x)]][ALPHABET[Number(occupantCurrentCoord.y) -1]] = {
         ...newGrid[ALPHABET[Number(occupantCurrentCoord.x)]][ALPHABET[Number(occupantCurrentCoord.y) - 1]],
         currentOccupantId: occupantId,
       };
       break;
     case 'right':
+      newTile = newGrid[ALPHABET[Number(occupantCurrentCoord.y) + 1]][ALPHABET[Number(occupantCurrentCoord.y)]];
+      console.log(getInteraction(newTile.currentOccupantId, occupantId));
       newGrid[ALPHABET[Number(occupantCurrentCoord.x)]][ALPHABET[Number(occupantCurrentCoord.y) + 1]] = {
         ...newGrid[ALPHABET[Number(occupantCurrentCoord.x)]][ALPHABET[Number(occupantCurrentCoord.y) + 1]],
         currentOccupantId: occupantId,
