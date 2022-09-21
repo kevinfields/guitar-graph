@@ -84,7 +84,13 @@ const GridGameBoard = (props) => {
       setControlInput('');
     };
 
-  }, [controlInput])
+  }, [controlInput]);
+
+  useEffect(() => {
+    if (grid && grid.empty) {
+      loadGridObject();
+    }
+  }, [grid])
 
   return (
     <div>

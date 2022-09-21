@@ -56,37 +56,55 @@ export default function changeGrid(grid, direction, occupantId, gridLength) {
   };
 
   let newTile;
+  let result;
   switch (direction) {
     case 'up':
       newTile = newGrid[ALPHABET[Number(occupantCurrentCoord.x) - 1]][ALPHABET[Number(occupantCurrentCoord.y)]];
-      console.log(getInteraction(newTile.currentOccupantId, occupantId));
-      newGrid[ALPHABET[Number(occupantCurrentCoord.x) - 1]][ALPHABET[Number(occupantCurrentCoord.y)]] = {
-        ...newGrid[ALPHABET[Number(occupantCurrentCoord.x) - 1]][ALPHABET[Number(occupantCurrentCoord.y)]],
-        currentOccupantId: occupantId,
-      };
+      result = getInteraction(newTile.currentOccupantId, occupantId);
+
+      if (result === 'none') {
+        newGrid[ALPHABET[Number(occupantCurrentCoord.x) - 1]][ALPHABET[Number(occupantCurrentCoord.y)]] = {
+          ...newGrid[ALPHABET[Number(occupantCurrentCoord.x) - 1]][ALPHABET[Number(occupantCurrentCoord.y)]],
+          currentOccupantId: occupantId,
+        };
+      } else if (result.substring(0, 3) === 'col') {
+        return {empty: true};
+      } 
       break;
     case 'down':
       newTile = newGrid[ALPHABET[Number(occupantCurrentCoord.x) + 1]][ALPHABET[Number(occupantCurrentCoord.y)]];
-      console.log(getInteraction(newTile.currentOccupantId, occupantId));
-      newGrid[ALPHABET[Number(occupantCurrentCoord.x) + 1]][ALPHABET[Number(occupantCurrentCoord.y)]] = {
-        ...newGrid[ALPHABET[Number(occupantCurrentCoord.x) + 1]][ALPHABET[Number(occupantCurrentCoord.y)]],
-        currentOccupantId: occupantId,
+      result = getInteraction(newTile.currentOccupantId, occupantId);
+      if (result === 'none') {
+        newGrid[ALPHABET[Number(occupantCurrentCoord.x) + 1]][ALPHABET[Number(occupantCurrentCoord.y)]] = {
+          ...newGrid[ALPHABET[Number(occupantCurrentCoord.x) + 1]][ALPHABET[Number(occupantCurrentCoord.y)]],
+          currentOccupantId: occupantId,
+        };
+      } else if (result.substring(0, 3) === 'col') {
+        return {empty: true};
       };
       break;
     case 'left':
-      newTile = newGrid[ALPHABET[Number(occupantCurrentCoord.y) - 1]][ALPHABET[Number(occupantCurrentCoord.y)]];
-      console.log(getInteraction(newTile.currentOccupantId, occupantId));
-      newGrid[ALPHABET[Number(occupantCurrentCoord.x)]][ALPHABET[Number(occupantCurrentCoord.y) -1]] = {
-        ...newGrid[ALPHABET[Number(occupantCurrentCoord.x)]][ALPHABET[Number(occupantCurrentCoord.y) - 1]],
-        currentOccupantId: occupantId,
+      newTile = newGrid[ALPHABET[Number(occupantCurrentCoord.x)]][ALPHABET[Number(occupantCurrentCoord.y) - 1]];
+      result = getInteraction(newTile.currentOccupantId, occupantId);
+      if (result === 'none') {
+        newGrid[ALPHABET[Number(occupantCurrentCoord.x)]][ALPHABET[Number(occupantCurrentCoord.y) -1]] = {
+          ...newGrid[ALPHABET[Number(occupantCurrentCoord.x)]][ALPHABET[Number(occupantCurrentCoord.y) - 1]],
+          currentOccupantId: occupantId,
+        };
+      } else if (result.substring(0, 3) === 'col') {
+        return {empty: true};
       };
       break;
     case 'right':
-      newTile = newGrid[ALPHABET[Number(occupantCurrentCoord.y) + 1]][ALPHABET[Number(occupantCurrentCoord.y)]];
-      console.log(getInteraction(newTile.currentOccupantId, occupantId));
-      newGrid[ALPHABET[Number(occupantCurrentCoord.x)]][ALPHABET[Number(occupantCurrentCoord.y) + 1]] = {
-        ...newGrid[ALPHABET[Number(occupantCurrentCoord.x)]][ALPHABET[Number(occupantCurrentCoord.y) + 1]],
-        currentOccupantId: occupantId,
+      newTile = newGrid[ALPHABET[Number(occupantCurrentCoord.x)]][ALPHABET[Number(occupantCurrentCoord.y) + 1]];
+      result = getInteraction(newTile.currentOccupantId, occupantId);
+      if (result === 'none') {
+        newGrid[ALPHABET[Number(occupantCurrentCoord.x)]][ALPHABET[Number(occupantCurrentCoord.y) + 1]] = {
+          ...newGrid[ALPHABET[Number(occupantCurrentCoord.x)]][ALPHABET[Number(occupantCurrentCoord.y) + 1]],
+          currentOccupantId: occupantId,
+        };
+      } else if (result.substring(0, 3) === 'col') {
+        return {empty: true};
       };
       break;
     default:

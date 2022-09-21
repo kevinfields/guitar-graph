@@ -15,7 +15,7 @@ export default function getInteraction(nId, fId) {
   switch (fTag) {
     case 'PLA': 
       if (nTag === 'OBS') {
-        return 'collision';
+        return 'col ' + nTag;
       } else if (nTag === 'INV') {
         return `take ${nTag}`;
       };
