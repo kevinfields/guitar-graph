@@ -9,8 +9,8 @@ const GridGameRow = (props) => {
         
       }}
     >
-      {props.row.map(item => (
-        <GridGameTile tile={item} key={Math.random()}/>
+      {props.row.map((item, key) => (
+        <GridGameTile tile={item} key={key}/>
       ))}
     </div>
   )

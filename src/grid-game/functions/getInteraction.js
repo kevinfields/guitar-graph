@@ -9,9 +9,6 @@ export default function getInteraction(nId, fId) {
   let fTag = fId.substring(0, 3);
   let nTag = nId.substring(0, 3);
 
-  console.log('fTag: ' + fTag);
-  console.log('nTag: ' + nTag);
-
   switch (fTag) {
     case 'PLA': 
       if (nTag === 'OBS') {

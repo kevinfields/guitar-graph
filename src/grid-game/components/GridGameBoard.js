@@ -71,16 +71,14 @@ const GridGameBoard = (props) => {
     };
   };
 
-  const moveObstacle = () => {
-    let newGrid;
-    newGrid = changeGrid(grid, 'right', `OBS${obstacleToMove}`, 12);
-    setGrid(newGrid);
-    parseGridObj(newGrid);
-  };
+  // const moveObstacle = () => {
+  //   let newGrid;
+  //   newGrid = changeGrid(grid, 'right', `OBS${obstacleToMove}`, 12);
+  //   setGrid(newGrid);
+  //   parseGridObj(newGrid);
+  // };
 
   const nextRound = () => {
-
-    console.log('obstacleCount: ' + obstacleCount);
 
     const directions = ['left', 'right', 'down', 'down'];
     let modifierGrid = {...grid};
@@ -90,6 +88,7 @@ const GridGameBoard = (props) => {
     while (counter <= (obstacleCount)) {
       
       if (removedObstacleIds.includes(counter)) {
+        counter++;
         continue;
       }
 
@@ -155,8 +154,8 @@ const GridGameBoard = (props) => {
         :
         <div className='main-game'>
           <div className='grid-game-grid' onClick={() => {dummy.current.focus()}}>
-            {rows.map(row => (
-              <GridGameRow row={row} key={Math.floor(Math.random() * 150000)}/>
+            {rows.map((row, key) => (
+              <GridGameRow row={row} key={key}/>
             ))} 
           </div>
           {/* <div className='game-scoreboard'>

@@ -24,7 +24,7 @@ export default function loadGrid(size, obstacleNum) {
 
         let obstacleRoll;
         if (obstacles < obstacleNum) {
-          obstacleRoll = Math.floor(Math.random() * (size * size)) + 1;
+          obstacleRoll = Math.floor(Math.random() * (size)) + 1;
         } else {
           obstacleRoll = -1;
         };

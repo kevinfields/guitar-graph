@@ -79,6 +79,8 @@ export default function changeGrid(grid, direction, occupantId, gridLength) {
         };
         removedObstacles.push(newTile.currentOccupantId); 
       } else {
+
+        console.log('result: ' + result);
         newGrid[ALPHABET[Number(occupantCurrentCoord.x)]][ALPHABET[Number(occupantCurrentCoord.y) - 1]] = {
           ...newGrid[ALPHABET[Number(occupantCurrentCoord.x)]][ALPHABET[Number(occupantCurrentCoord.y) - 1]],
           currentOccupantId: newTile.currentOccupantId,
@@ -102,6 +104,8 @@ export default function changeGrid(grid, direction, occupantId, gridLength) {
         };
         removedObstacles.push(newTile.currentOccupantId);
       } else {
+
+        console.log('result: ' + result);
         newGrid[ALPHABET[Number(occupantCurrentCoord.x) + 1]][ALPHABET[Number(occupantCurrentCoord.y) - 1]] = {
           ...newGrid[ALPHABET[Number(occupantCurrentCoord.x) + 1]][ALPHABET[Number(occupantCurrentCoord.y) - 1]],
           currentOccupantId: newTile.currentOccupantId,
@@ -125,6 +129,8 @@ export default function changeGrid(grid, direction, occupantId, gridLength) {
         };
         removedObstacles.push(newTile.currentOccupantId);
       } else {
+
+        console.log('result: ' + result);
         newGrid[ALPHABET[Number(occupantCurrentCoord.x)]][ALPHABET[Number(occupantCurrentCoord.y) - 1]] = {
           ...newGrid[ALPHABET[Number(occupantCurrentCoord.x)]][ALPHABET[Number(occupantCurrentCoord.y) - 1]],
           currentOccupantId: newTile.currentOccupantId,
@@ -148,6 +154,8 @@ export default function changeGrid(grid, direction, occupantId, gridLength) {
         };
         removedObstacles.push(newTile.currentOccupantId);
       } else {
+
+        console.log('result: ' + result);
         newGrid[ALPHABET[Number(occupantCurrentCoord.x)]][ALPHABET[Number(occupantCurrentCoord.y) + 1]] = {
           ...newGrid[ALPHABET[Number(occupantCurrentCoord.x)]][ALPHABET[Number(occupantCurrentCoord.y) + 1]],
           currentOccupantId: newTile.currentOccupantId,
@@ -163,6 +171,7 @@ export default function changeGrid(grid, direction, occupantId, gridLength) {
     removedObstacles: newGrid.removedObstacles.concat(removedObstacles),
   };
 
-  console.log(JSON.stringify(newGrid));
+  console.log(newGrid.removedObstacles);
+
   return newGrid;
 }
