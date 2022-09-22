@@ -4,8 +4,6 @@ const ALPHABET = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm
 
 export default function changeGrid(grid, direction, occupantId, gridLength) {
 
-  
-
 
   function allowMovement(coords, dir) {
 
@@ -63,6 +61,10 @@ export default function changeGrid(grid, direction, occupantId, gridLength) {
   switch (direction) {
     case 'up':
       newTile = newGrid[ALPHABET[Number(occupantCurrentCoord.x) - 1]][ALPHABET[Number(occupantCurrentCoord.y)]];
+
+      if (!newTile.currentOccupantId) {
+        console.log(JSON.stringify(newTile));
+      }
       result = getInteraction(newTile.currentOccupantId, occupantId);
 
       if (result === 'none') {
@@ -89,6 +91,10 @@ export default function changeGrid(grid, direction, occupantId, gridLength) {
       break;
     case 'down':
       newTile = newGrid[ALPHABET[Number(occupantCurrentCoord.x) + 1]][ALPHABET[Number(occupantCurrentCoord.y)]];
+
+      if (!newTile.currentOccupantId) {
+        console.log(JSON.stringify(newTile));
+      }
       result = getInteraction(newTile.currentOccupantId, occupantId);
       if (result === 'none') {
         newGrid[ALPHABET[Number(occupantCurrentCoord.x) + 1]][ALPHABET[Number(occupantCurrentCoord.y)]] = {
@@ -114,6 +120,10 @@ export default function changeGrid(grid, direction, occupantId, gridLength) {
       break;
     case 'left':
       newTile = newGrid[ALPHABET[Number(occupantCurrentCoord.x)]][ALPHABET[Number(occupantCurrentCoord.y) - 1]];
+
+      if (!newTile.currentOccupantId) {
+        console.log(JSON.stringify(newTile));
+      }
       result = getInteraction(newTile.currentOccupantId, occupantId);
       if (result === 'none') {
         newGrid[ALPHABET[Number(occupantCurrentCoord.x)]][ALPHABET[Number(occupantCurrentCoord.y) - 1]] = {
@@ -139,6 +149,10 @@ export default function changeGrid(grid, direction, occupantId, gridLength) {
       break;
     case 'right':
       newTile = newGrid[ALPHABET[Number(occupantCurrentCoord.x)]][ALPHABET[Number(occupantCurrentCoord.y) + 1]];
+
+      if (!newTile.currentOccupantId) {
+        console.log(JSON.stringify(newTile));
+      }
       result = getInteraction(newTile.currentOccupantId, occupantId);
       if (result === 'none') {
         newGrid[ALPHABET[Number(occupantCurrentCoord.x)]][ALPHABET[Number(occupantCurrentCoord.y) + 1]] = {
@@ -166,12 +180,11 @@ export default function changeGrid(grid, direction, occupantId, gridLength) {
       break;
   };
 
+
   newGrid = {
     ...newGrid,
     removedObstacles: newGrid.removedObstacles.concat(removedObstacles),
   };
-
-  console.log(newGrid.removedObstacles);
 
   return newGrid;
 }

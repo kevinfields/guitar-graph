@@ -1,0 +1,62 @@
+.main-game {
+  border: 1px solid blue;
+}
+
+.grid-game-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25vh;
+}
+
+.grid-flex {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25vh;
+  flex-wrap: wrap;
+  max-height: 85vh;
+}
+
+.grid-game-row {
+  display: flex;
+  flex-direction: row;
+  gap: 0.25vh;
+}
+
+.control-panel {
+  position: fixed;
+  left: 65vw;
+  top: 15vh;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 1vh;
+  width: 20vw;
+}
+
+.game-button {
+  width: 15vw;
+}
+
+.grid-game-control-input {
+  width: 5vw;
+  color: white;
+  caret-color: transparent;
+  border: 1px solid white;
+}
+
+[class^="grid-game-tile-"] {
+  width: 6.5vh;
+  height: 6.5vh;
+  border: 1px solid black;
+  font-size: 7pt;
+}
+
+.grid-game-tile-PLAYER {
+  background-color: lightblue;
+  color: red;
+}
+
+[class^="grid-game-tile-OBS"] {
+  background-color: red;
+  color: white;
+}
