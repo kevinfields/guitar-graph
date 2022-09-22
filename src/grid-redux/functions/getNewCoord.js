@@ -21,15 +21,14 @@ export default function getNewCoord(oldCoord, direction, size) {
     default:
       break;
   };
-
-  if (numericalX < 0 || numericalX > size) {
+  
+  if (numericalX < 0 || numericalX >= size) {
     return oldCoord;
   };
 
-  if (numericalY < 0 || numericalY > size) {
+  if (numericalY < 0 || numericalY >= size) {
     return oldCoord;
   };
-
 
   return ALPHABET[numericalY] + ALPHABET[numericalX];
 }

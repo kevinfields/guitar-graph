@@ -6,11 +6,21 @@ const ALPHABET = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M
 export default function movePiece(grid, id, direction) {
 
 
+  let obstacles = [];
   let location = 'XX';
   for (const coord in grid) {
+
+    if (coord.toUpperCase() !== coord) {
+      continue;
+    };
+
     if (grid[coord].occupant === id) {
       location = coord;
-      break;
+    } else if (grid[coord].occupant.substring(0, 3) ===  'OBS') {
+      obstacles.push({
+        id: grid[coord].occupant,
+        coord: coord,
+      });
     };
   };
 
@@ -27,6 +37,27 @@ export default function movePiece(grid, id, direction) {
   }
 
   let newCoord = getNewCoord(location, direction, grid.size);
+
+  obstacles.forEach((obs) => {
+
+    
+    let newObstacleCoord = getNewCoord(obs.coord, 'S', grid.size);
+
+    if (newObstacleCoord !== obs.coord) {
+      
+      newGrid[obs.coord] = {
+        ...newGrid[obs.coord],
+        occupant: '',
+      };
+      
+      newGrid[newObstacleCoord] = {
+        ...newGrid[newObstacleCoord],
+        occupant: obs.id,
+      };
+      
+    };
+
+  });
 
   newGrid[newCoord] = {
     ...grid[newCoord],
