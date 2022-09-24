@@ -40,29 +40,38 @@ export default function movePiece(grid, id, direction) {
 
   obstacles.forEach((obs) => {
 
-    
-    let newObstacleCoord = getNewCoord(obs.coord, 'S', grid.size);
-
+    const directions = ['W', /* 'A',*/ 'S', /*'D'*/]
+    let newObstacleCoord = getNewCoord(obs.coord, directions[Math.floor(Math.random() * 4)], grid.size);
     if (newObstacleCoord !== obs.coord) {
-      
       newGrid[obs.coord] = {
         ...newGrid[obs.coord],
         occupant: '',
       };
-      
       newGrid[newObstacleCoord] = {
         ...newGrid[newObstacleCoord],
         occupant: obs.id,
       };
-      
     };
-
   });
 
-  newGrid[newCoord] = {
-    ...grid[newCoord],
-    occupant: id,
+  if (newGrid[newCoord].occupant !== '') {
+    newGrid = {
+      ...newGrid,
+      failed: true,
+    }
+  } else {
+    newGrid[newCoord] = {
+      ...grid[newCoord],
+      occupant: id,
+    };
   };
+
+  if (id === 'PLAYER' && newCoord[0] === 'A') {
+    newGrid = {
+      ...newGrid,
+      passed: true,
+    }
+  }
 
   return newGrid;
 }

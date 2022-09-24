@@ -22,9 +22,21 @@ export default function getNewCoord(oldCoord, direction, size) {
       break;
   };
   
-  if (numericalX < 0 || numericalX >= size) {
-    return oldCoord;
+  if (numericalX < 0) {
+    numericalX = size - 1;
   };
+
+  if (numericalY < 0) {
+    numericalY = size - 1;
+  };
+
+  if (numericalX >= size) {
+    numericalX = 0;
+  };
+
+  if (numericalY >= size) {
+    numericalY = 0;
+  }
 
   if (numericalY < 0 || numericalY >= size) {
     return oldCoord;

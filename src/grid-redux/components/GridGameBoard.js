@@ -13,6 +13,8 @@ const GridGameBoard = (props) => {
   const [columns, setColumns] = useState([]);
   const [controller, setController] = useState('');
   const [playerCoord, setPlayerCoord] = useState('');
+  const [currentScore, setCurrentScore] = useState(0);
+  const [currentErrors, setCurrentErrors] = useState(0);
   const dummy = useRef();
 
   const parseGrid = (grid) => {
@@ -29,12 +31,11 @@ const GridGameBoard = (props) => {
         tileArr[arrIndex].push(grid[coord]);
       };
     };
-
     setColumns(tileArr);
   }
 
   const loadNewGrid = () => {
-    let newGrid = loadGrid(props.size, 8);
+    let newGrid = loadGrid(props.size, props.size * 2);
     setGrid(newGrid);
     parseGrid(newGrid);
     setLoading(false);
@@ -48,6 +49,7 @@ const GridGameBoard = (props) => {
   const restartGame = () => {
     setLoading(true);
     loadNewGrid();
+    dummy.current.focus();
   };
 
   useEffect(() => {
@@ -57,13 +59,22 @@ const GridGameBoard = (props) => {
   useEffect(() => {
     if (grid && grid.AA) {
       parseGrid(grid);
+      if (grid.passed) {
+        setCurrentScore(currentScore + Number(props.size));
+        restartGame();
+      } else if (grid.failed) {
+        setCurrentErrors(currentErrors + 1);
+        restartGame();
+      };
     };
   }, [grid]);
 
   useEffect(() => {
     if (!isNaN(props.size) && props.size > 0 && props.size <= 18) {
       loadNewGrid(props.size);
-    };
+    } else {
+      loadNewGrid(10);
+    }
   }, [props.size]);
 
   useEffect(() => {
@@ -86,8 +97,18 @@ const GridGameBoard = (props) => {
               <GridGameColumn column={column} key={key} />
             ))}
           </div>
+          <div className='grid-options-card'>
+            <button 
+              onClick={() => restartGame()}
+              className='grid-options-button'
+            >
+              Restart Game
+            </button>
+          </div>
           <div className='grid-data-sheet'>
-            Obstacle Count: {grid.obstacleCount}
+            <div className='grid-data-item'>Obstacle Count: {grid.obstacleCount}</div>
+            <div className='grid-data-item'>Current Score: {currentScore}</div>
+            <div className='grid-data-item'>Current Errors: {currentErrors}</div>
           </div>
           <div
             className='grid-controller-container'

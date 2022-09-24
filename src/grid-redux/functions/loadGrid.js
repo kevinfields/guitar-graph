@@ -9,8 +9,8 @@ export default function loadGrid(size, obstacleNum) {
     for (let j=0; j<size; j++) {
       // iterate over every item in a square grid with length obstacleNum. Name the single grid unit.
       let unitId = ALPHABET[i] + ALPHABET[j];
-      // if it's a middle tile, spawn the player here and continue to next iteration
-      if ((i === j) && (Math.floor(size / 2) === i)) {
+      // if it's the bottom middle tile, spawn the player here and continue to next iteration
+      if (j === Math.floor(size / 2) && i === size - 1) {
         grid[unitId] = {
           coordinates: i.toString() + '.' + j.toString(),
           occupant: 'PLAYER',
