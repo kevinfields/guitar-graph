@@ -15,6 +15,7 @@ const GridGameBoard = (props) => {
   const [playerCoord, setPlayerCoord] = useState('');
   const [currentScore, setCurrentScore] = useState(0);
   const [currentErrors, setCurrentErrors] = useState(0);
+  const [difficulty, setDifficulty] = useState(0);
   const dummy = useRef();
 
   const parseGrid = (grid) => {
@@ -43,7 +44,7 @@ const GridGameBoard = (props) => {
 
 
   const movePlayer = (dir) => {
-    setGrid(movePiece(grid, 'PLAYER', dir));  
+    setGrid(movePiece(grid, 'PLAYER', dir, difficulty));  
   };
 
   const restartGame = () => {
@@ -86,6 +87,14 @@ const GridGameBoard = (props) => {
   
   }, [controller]);
 
+  useEffect(() => {
+
+    if (!loading) {
+      restartGame();
+    };
+    
+  }, [difficulty])
+
   return (
     <div className='grid'>
       {
@@ -104,6 +113,26 @@ const GridGameBoard = (props) => {
             >
               Restart Game
             </button>
+            <div className='grid-difficulty-selector'>
+              <button 
+                className='difficulty-button'
+                onClick={() => setDifficulty(0)}
+              >
+                Easy
+              </button>
+              <button 
+                className='difficulty-button'
+                onClick={() => setDifficulty(1)}
+              >
+                Medium
+              </button>
+              <button 
+                className='difficulty-button'
+                onClick={() => setDifficulty(2)}
+              >
+                Hard
+              </button>
+            </div>
           </div>
           <div className='grid-data-sheet'>
             <div className='grid-data-item'>Obstacle Count: {grid.obstacleCount}</div>

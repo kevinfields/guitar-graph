@@ -3,7 +3,17 @@ import getNewCoord from "./getNewCoord";
 const ALPHABET = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S'];
 
 
-export default function movePiece(grid, id, direction) {
+export default function movePiece(grid, id, direction, difficulty) {
+
+  let directions = ['S'];
+
+  if (difficulty > 0) {
+    directions.push('W');
+  };
+
+  if (difficulty === 2) {
+    directions.push('A', 'D');
+  };
 
 
   let obstacles = [];
@@ -40,8 +50,7 @@ export default function movePiece(grid, id, direction) {
 
   obstacles.forEach((obs) => {
 
-    const directions = ['W', /* 'A',*/ 'S', /*'D'*/]
-    let newObstacleCoord = getNewCoord(obs.coord, directions[Math.floor(Math.random() * 4)], grid.size);
+    let newObstacleCoord = getNewCoord(obs.coord, directions[Math.floor(Math.random() * directions.length)], grid.size);
     if (newObstacleCoord !== obs.coord) {
       newGrid[obs.coord] = {
         ...newGrid[obs.coord],
