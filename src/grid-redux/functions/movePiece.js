@@ -76,11 +76,21 @@ export default function movePiece(grid, id, direction, difficulty) {
   };
 
   if (id === 'PLAYER' && newCoord[0] === 'A') {
+
+    if (grid.moves < grid.size) {
+      return newGrid;
+    };
+    
+    alert('Moves: ' + grid.moves);
     newGrid = {
       ...newGrid,
       passed: true,
     }
-  }
+  };
 
+  newGrid = {
+    ...newGrid,
+    moves: grid.moves + 1,
+  }
   return newGrid;
 }

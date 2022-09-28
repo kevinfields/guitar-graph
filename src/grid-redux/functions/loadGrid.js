@@ -38,6 +38,7 @@ export default function loadGrid(size, obstacleNum) {
     removedObstacles: [],
     obstacleCount: usedObstacles,
     size: size,
+    moves: 0,
   };
 
   return grid;
