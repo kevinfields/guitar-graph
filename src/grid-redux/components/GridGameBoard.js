@@ -4,6 +4,8 @@ import Loading from '../../components/Loading';
 import loadGrid from '../functions/loadGrid';
 import movePiece from '../functions/movePiece';
 import ErrorScreen from './ErrorScreen';
+import GridDataSheet from './GridDataSheet';
+import GridDifficultySelector from './GridDifficultySelector';
 import GridGameColumn from './GridGameColumn';
 import SuccessScreen from './SuccessScreen';
 
@@ -114,7 +116,7 @@ const GridGameBoard = (props) => {
             {columns.map((column, key) => (
               <GridGameColumn column={column} key={key} />
             ))}
-          </div>
+          </div>       
           <div className='grid-options-card'>
             <button 
               onClick={() => restartGame()}
@@ -122,41 +124,25 @@ const GridGameBoard = (props) => {
             >
               Restart Game
             </button>
-            <div className='grid-difficulty-selector'>
-              <button 
-                className='difficulty-button'
-                onClick={() => setDifficulty(0)}
-              >
-                Easy
-              </button>
-              <button 
-                className='difficulty-button'
-                onClick={() => setDifficulty(1)}
-              >
-                Medium
-              </button>
-              <button 
-                className='difficulty-button'
-                onClick={() => setDifficulty(2)}
-              >
-                Hard
-              </button>
-            </div>
+            <GridDifficultySelector
+              setDifficulty={(num) => setDifficulty(num)}
+              difficulty={difficulty}
+            />
           </div>
-          <div className='grid-data-sheet'>
-            <div className='grid-data-item'>Obstacle Count: {grid.obstacleCount}</div>
-            <div className='grid-data-item'>Current Score: {currentScore}</div>
-            <div className='grid-data-item'>Current Errors: {currentErrors}</div>
-          </div>
+          <GridDataSheet
+            obstacleCount={grid.obstacleCount}
+            currentScore={currentScore}
+            currentErrors={currentErrors}
+          />
           <div className='grid-success-container'>
             {success ? 
               <SuccessScreen 
-                moves={grid.moves - 1}
+                moves={grid.moves}
                 restartGame={() => restartGame()}
               />
             : fail ?
               <ErrorScreen
-                moves={grid.moves - 1}
+                moves={grid.moves}
                 restartGame={() => restartGame()}
               />
             :

@@ -141,8 +141,9 @@
   height: 10vh;
 }
 
-.success-restart-button {
-
+.restart-button {
+  width: 9vw;
+  height: 5vh;
 }
 
 .error-screen {
@@ -151,4 +152,35 @@
   gap: 1vh;
   justify-content: space-around;
   height: 10vh;
+}
+
+.error-header {
+  color: red;
+}
+
+.success-header {
+  color: green;
+}
+
+.error-message {
+  color: maroon;
+}
+
+.success-message {
+  color: rgb(81, 134, 0)
+}
+
+
+.difficulty-button-selected {
+  border: 2px solid blue;
+  box-shadow: 3px 1px 1px 3px darkblue;
+  width: 5vw;
+  height: 5vh;
+}
+
+.difficulty-button-unselected {
+  border: 1px solid lightblue;
+  box-shadow: 1px 3px 3px 1px blue;
+  width: 5vw;
+  height: 5vh;
 }

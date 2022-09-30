@@ -85,11 +85,6 @@ export default function movePiece(grid, id, direction, difficulty) {
   };
 
   if (id === 'PLAYER' && newCoord[0] === 'A') {
-
-    if (grid.moves < grid.size) {
-      return newGrid;
-    };
-    
     newGrid = {
       ...newGrid,
       passed: true,
