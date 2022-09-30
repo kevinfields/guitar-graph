@@ -21,7 +21,7 @@ export default function loadGrid(size, obstacleNum) {
       let occupant = '';
       if (usedObstacles < obstacleNum) {
         let obstacleRoll = Math.random();
-        if (obstacleRoll <= 0.2) {
+        if (obstacleRoll <= 0.3) {
           occupant = `OBS${usedObstacles + 1}`;
           usedObstacles++;
         };
