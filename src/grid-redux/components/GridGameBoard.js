@@ -1,8 +1,11 @@
+import { Girl, SentimentSatisfiedAltRounded } from '@mui/icons-material';
 import React, {useState, useEffect, useRef} from 'react'
 import Loading from '../../components/Loading';
 import loadGrid from '../functions/loadGrid';
 import movePiece from '../functions/movePiece';
+import ErrorScreen from './ErrorScreen';
 import GridGameColumn from './GridGameColumn';
+import SuccessScreen from './SuccessScreen';
 
 const ALPHABET = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S'];
 
@@ -16,6 +19,8 @@ const GridGameBoard = (props) => {
   const [currentScore, setCurrentScore] = useState(0);
   const [currentErrors, setCurrentErrors] = useState(0);
   const [difficulty, setDifficulty] = useState(0);
+  const [success, setSuccess] = useState(false);
+  const [fail, setFail] = useState(false);
   const dummy = useRef();
 
   const parseGrid = (grid) => {
@@ -44,11 +49,15 @@ const GridGameBoard = (props) => {
 
 
   const movePlayer = (dir) => {
-    setGrid(movePiece(grid, 'PLAYER', dir, difficulty));  
+    if (!success && !fail) {
+      setGrid(movePiece(grid, 'PLAYER', dir, difficulty));
+    };
   };
 
   const restartGame = () => {
     setLoading(true);
+    setSuccess(false);
+    setFail(false);
     loadNewGrid();
     dummy.current.focus();
   };
@@ -62,10 +71,10 @@ const GridGameBoard = (props) => {
       parseGrid(grid);
       if (grid.passed) {
         setCurrentScore(currentScore + Number(props.size));
-        restartGame();
+        setSuccess(true);
       } else if (grid.failed) {
         setCurrentErrors(currentErrors + 1);
-        restartGame();
+        setFail(true);
       };
     };
   }, [grid]);
@@ -138,6 +147,21 @@ const GridGameBoard = (props) => {
             <div className='grid-data-item'>Obstacle Count: {grid.obstacleCount}</div>
             <div className='grid-data-item'>Current Score: {currentScore}</div>
             <div className='grid-data-item'>Current Errors: {currentErrors}</div>
+          </div>
+          <div className='grid-success-container'>
+            {success ? 
+              <SuccessScreen 
+                moves={grid.moves - 1}
+                restartGame={() => restartGame()}
+              />
+            : fail ?
+              <ErrorScreen
+                moves={grid.moves - 1}
+                restartGame={() => restartGame()}
+              />
+            :
+              null
+            }
           </div>
           <div
             className='grid-controller-container'

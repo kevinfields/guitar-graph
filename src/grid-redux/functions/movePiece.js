@@ -35,9 +35,18 @@ export default function movePiece(grid, id, direction, difficulty) {
   };
 
   if (location === 'XX') {
-    console.log('failed to find id in grid');
     return grid;
-  }
+  };
+
+  if (id === 'PLAYER') {
+    if (location[0] === ALPHABET[grid.size - 1]) {
+      if (direction === 'S') {
+        console.log('nah');
+        console.log('location: ' + location);
+        return grid;
+      };
+    };
+  };
 
   let newGrid = {...grid};
 
@@ -81,7 +90,6 @@ export default function movePiece(grid, id, direction, difficulty) {
       return newGrid;
     };
     
-    alert('Moves: ' + grid.moves);
     newGrid = {
       ...newGrid,
       passed: true,

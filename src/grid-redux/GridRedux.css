@@ -124,3 +124,31 @@
   caret-color: transparent;
   border: 1px solid white;
 }
+
+.grid-success-container {
+  position: fixed;
+  left: 65vw;
+  top: 20vh;
+  width: 20vw;
+  height: 12.5vh;
+}
+
+.success-screen {
+  display: flex;
+  flex-direction: column;
+  gap: 1vh;
+  justify-content: space-around;
+  height: 10vh;
+}
+
+.success-restart-button {
+
+}
+
+.error-screen {
+  display: flex;
+  flex-direction: column;
+  gap: 1vh;
+  justify-content: space-around;
+  height: 10vh;
+}
