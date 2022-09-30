@@ -1,3 +1,4 @@
+import getDirection from "./getDirection";
 import getNewCoord from "./getNewCoord";
 
 const ALPHABET = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S'];
@@ -57,20 +58,39 @@ export default function movePiece(grid, id, direction, difficulty) {
 
   let newCoord = getNewCoord(location, direction, grid.size);
 
-  obstacles.forEach((obs) => {
+  if (difficulty < 2) {
+    obstacles.forEach((obs) => {
 
-    let newObstacleCoord = getNewCoord(obs.coord, directions[Math.floor(Math.random() * directions.length)], grid.size);
-    if (newObstacleCoord !== obs.coord) {
-      newGrid[obs.coord] = {
-        ...newGrid[obs.coord],
-        occupant: '',
+      let newObstacleCoord = getNewCoord(obs.coord, directions[Math.floor(Math.random() * directions.length)], grid.size);
+      if (newObstacleCoord !== obs.coord) {
+        newGrid[obs.coord] = {
+          ...newGrid[obs.coord],
+          occupant: '',
+        };
+        newGrid[newObstacleCoord] = {
+          ...newGrid[newObstacleCoord],
+          occupant: obs.id,
+        };
       };
-      newGrid[newObstacleCoord] = {
-        ...newGrid[newObstacleCoord],
-        occupant: obs.id,
+    });
+  } else {
+
+    obstacles.forEach((obs) => {
+
+      let homingDirection = getDirection(obs.coord, newCoord);
+      let newObstacleCoord = getNewCoord(obs.coord, homingDirection, grid.size);
+      if (newObstacleCoord !== obs.coord) {
+        newGrid[obs.coord] = {
+          ...newGrid[obs.coord],
+          occupant: '',
+        };
+        newGrid[newObstacleCoord] = {
+          ...newGrid[newObstacleCoord],
+          occupant: obs.id,
+        };
       };
-    };
-  });
+    });
+  }
 
   if (newGrid[newCoord].occupant !== '') {
     newGrid = {
