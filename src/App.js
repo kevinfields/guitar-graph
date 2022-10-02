@@ -21,6 +21,7 @@ import AllUsersPage from "./pages/AllUsersPage";
 import GenerationsPage from "./practice/pages/GenerationsPage";
 import GridGamePage from "./grid-game/GridGamePage";
 import GridReduxPage from "./grid-redux/GridReduxPage";
+import CommunityPage from "./community/CommunityPage";
 
 
 firebase.initializeApp({
@@ -181,6 +182,12 @@ function App() {
                   path={'/grid-game-redux'}
                   element={
                     <GridReduxPage />
+                  }
+                />
+                <Route
+                  path={'/community'}
+                  element={
+                    <CommunityPage />
                   }
                 />
               </>

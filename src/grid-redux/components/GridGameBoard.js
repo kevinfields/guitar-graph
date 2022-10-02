@@ -1,4 +1,3 @@
-import { Girl, SentimentSatisfiedAltRounded } from '@mui/icons-material';
 import React, {useState, useEffect, useRef} from 'react'
 import Loading from '../../components/Loading';
 import loadGrid from '../functions/loadGrid';
@@ -104,7 +103,7 @@ const GridGameBoard = (props) => {
       restartGame();
     };
     
-  }, [difficulty])
+  }, [difficulty]);
 
   return (
     <div className='grid'>

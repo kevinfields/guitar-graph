@@ -141,3 +141,33 @@ code {
   gap: 2vh;
   overflow-y: scroll;
 }
+
+
+
+.drag-and-drop-container-redux {
+  width: 50vw;
+  height: 50vh;
+  border: 1px solid blue;
+  display: flex;
+  flex-direction: column;
+  gap: 1vh;
+  margin: 2vh;
+  overflow-y: scroll;
+}
+
+.drag-and-drop-object-redux {
+  width: 30vw;
+  height: 10vh;
+  border: 1px solid blue;
+  text-align: center;
+  font-size: larger;
+  position: relative;
+  left: 2.5vw;
+}
+
+.drag-and-drop-slot-redux {
+  width: 35vw;
+  border: 1px solid green;
+  position: relative;
+  left: 20%;
+}

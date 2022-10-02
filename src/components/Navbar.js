@@ -16,6 +16,7 @@ const Navbar = (props) => {
         <Link to='/generations'>Generations Page</Link>
         <Link to='/grid-game'>Grid Game</Link>
         <Link to='grid-game-redux'>Grid Game Redux</Link>
+        <Link to='/community'>Community</Link>
         <Link to='/all-users'>All Users</Link>
         <Link to='/logout'>Logout</Link>
       </div>
