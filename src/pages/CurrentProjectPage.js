@@ -55,7 +55,6 @@ const CurrentProjectPage = (props) => {
     setProject(data);
     setLyrics(lyrics);
     setNotes(notes);
-
     tracklist = tracklist.sort((a, b) => a.data.index - b.data.index);
     setTracks(tracklist);
     setLoading(false);
@@ -196,14 +195,8 @@ const CurrentProjectPage = (props) => {
   };
 
   const adjustOrder = async () => {
-
-    if (newTrackOrder.length !== tracks.length) {
-      console.log('sorry, no can do.')
-      return;
-    }
-    await ADJUST_TRACK_ORDER(newTrackOrder.split(''), props.userRef.collection('projects').doc(id)).then(() => {
+    await ADJUST_TRACK_ORDER(tracks, props.userRef.collection('projects').doc(id)).then(() => {
       loadProject();
-      setNewTrackOrder('');
     });
   };
 
@@ -215,6 +208,12 @@ const CurrentProjectPage = (props) => {
   const saveAdjustedOrder = async () => {
     await ADJUST_TRACK_ORDER(tracks, props.userRef.collection('projects').doc(id)).then(() => {
       loadProject();
+    });
+  };
+
+  const moveTracks = async (newOrder) => {
+    await ADJUST_TRACK_ORDER(newOrder, props.userRef.collection('projects').doc(id)).then(() => {
+      setTracks(newOrder);
     });
   }
 
@@ -292,12 +291,10 @@ const CurrentProjectPage = (props) => {
 
   }, [viewing]);
 
-  useEffect(() => {
-    saveAdjustedOrder();
-  }, [tracks])
 
 
   const makeArray = (tracks) => {
+
     let arr = [];
     tracks.forEach(item => {
       arr.push(<TrackObject track={item} />);
