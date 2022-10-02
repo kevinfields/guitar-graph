@@ -13,6 +13,13 @@
 
 export default async function ADJUST_TRACK_ORDER(newOrder, projectRef) {
 
+  if (isNaN(newOrder[0])) {
+    for (let i=0; i<newOrder.length; i++) {
+      newOrder[i] = newOrder[i].data.index;
+    };
+  };
+
+
   let tracks = [];
   await projectRef.collection('tracks').get().then(snap => {
     snap.forEach(doc => {

@@ -171,3 +171,21 @@ code {
   position: relative;
   left: 20%;
 }
+
+
+.project-tracks-container {
+  width: fit-content;
+  padding: 1vw;
+  overflow-y: scroll;
+  display: flex;
+  flex-direction: row;
+  gap: 1vh;
+}
+
+.project-tracks-slot {
+
+}
+
+.project-tracks-object {
+
+}

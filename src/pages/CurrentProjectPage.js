@@ -11,6 +11,7 @@ import makeIdFromTitle from '../functions/makeIdFromTitle';
 import ADJUST_TRACK_ORDER from '../reducers/ADJUST_TRACK_ORDER';
 import ASSIGN_TO_TRACK from '../reducers/ASSIGN_TO_TRACK';
 import CREATE_NEW_SONG from '../reducers/CREATE_NEW_SONG';
+import { DragAndDropOrder } from 'light-blue-drag-and-drop';
 
 const CurrentProjectPage = (props) => {
 
@@ -26,7 +27,7 @@ const CurrentProjectPage = (props) => {
   const [newNoteScreen, setNewNoteScreen] = useState({open: false, newNote: ''});
   const [newLyricScreen, setNewLyricScreen] = useState({open: false, newLyric: ''});
   const [assignmentScreen, setAssignmentScreen] = useState({open: false, index: -1, type: ''});
-  const [newTrackOrder, setNewTrackOrder] = useState('');
+  const [newTrackOrder, setNewTrackOrder] = useState(['']);
   const [viewing, setViewing] = useState('tracks');
   const navigate = useNavigate();
   const { id } = useParams();
@@ -209,6 +210,12 @@ const CurrentProjectPage = (props) => {
   const pickUpTrack = (track) => {
 
     console.log('track index: ' + track.data.index);
+  };
+
+  const saveAdjustedOrder = async () => {
+    await ADJUST_TRACK_ORDER(tracks, props.userRef.collection('projects').doc(id)).then(() => {
+      loadProject();
+    });
   }
 
   useEffect(() => {
@@ -283,8 +290,63 @@ const CurrentProjectPage = (props) => {
       };
     }
 
-  }, [viewing])
+  }, [viewing]);
 
+  useEffect(() => {
+    saveAdjustedOrder();
+  }, [tracks])
+
+
+  const makeArray = (tracks) => {
+    let arr = [];
+    tracks.forEach(item => {
+      arr.push(<TrackObject track={item} />);
+    });
+    return arr;
+  };
+
+  const parseArray = (tracks) => {
+
+    let arr = [];
+    tracks.forEach(item => {
+      arr.push(item.props.track);
+    });
+    return arr;
+  }
+
+  const TrackObject = (props) => {
+
+    return (
+      <>
+        <Card
+          sx={{
+            display: 'flex',
+            flexDirection: 'row',
+            gap: '1vw',
+            marginLeft: '1vw',
+            padding: '1vh',
+            minHeight: '7vh',
+            backgroundColor: 'lightblue',
+          }}
+        >
+          <Typography>{props.track.data.songTitle}</Typography>
+          <Button
+            onClick={() => navigate(`/my-projects/${id}/tracks/${props.track.id}`)}
+            variant='contained'
+          >
+            Open Track Page
+          </Button>
+          <Button
+            onClick={() => setDeletingTrack({open: true, track: props.track})}
+            variant='contained'
+            color='error'
+          >
+            Delete
+          </Button>
+        </Card>
+      </>
+    )
+  };
 
   return (
     <div className='page'>
@@ -362,45 +424,12 @@ const CurrentProjectPage = (props) => {
                     padding: '1vh',
                   }}
                 >
-                  {tracks.map(track => (
-                    <div
-                      draggable={true}
-                    >
-                      <Card
-                        sx={{
-                          display: 'flex',
-                          flexDirection: 'row',
-                          gap: '1vw',
-                          marginLeft: '1vw',
-                          padding: '1vh',
-                          minHeight: '7vh',
-                          backgroundColor: 'lightblue',
-                        }}
-                      >
-                        <Typography>{track.data.songTitle}</Typography>
-                        <Button
-                          onClick={() => navigate(`/my-projects/${id}/tracks/${track.id}`)}
-                          variant='contained'
-                        >
-                          Open Track Page
-                        </Button>
-                        <Button
-                          onClick={() => setDeletingTrack({open: true, track: track})}
-                          variant='contained'
-                          color='error'
-                        >
-                          Delete
-                        </Button>
-                        <Button
-                          onClick={() => pickUpTrack(track)}
-                          variant='outlined'
-                          color='secondary'
-                        >
-                          Move
-                        </Button>
-                      </Card>
-                    </div>
-                  ))}
+                  <DragAndDropOrder
+                    order={makeArray(tracks)}
+                    onAdjustOrder={(newOrder) => setTracks(parseArray(newOrder))}
+                    insert={false}
+                    containerClassName=''
+                  />
                 </div>
               :
                 <Typography>Add some tracks to get started.</Typography>

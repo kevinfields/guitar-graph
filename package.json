@@ -13,7 +13,7 @@
     "@testing-library/user-event": "^13.5.0",
     "firebase": "^9.9.3",
     "graphql": "^16.6.0",
-    "light-blue-drag-and-drop": "^0.1.1",
+    "light-blue-drag-and-drop": "^0.1.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-firebase-hooks": "^5.0.3",
