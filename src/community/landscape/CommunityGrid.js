@@ -1,6 +1,7 @@
 import React, {useState} from 'react'
 import {DragAndDropOrder} from 'light-blue-drag-and-drop';
 import { Button } from '@mui/material';
+import {ResponseModal} from 'multitype-response-modal';
 
 const ConsoleButton = () => {
   return (
@@ -28,6 +29,7 @@ const CommunityGrid = () => {
 
   const [alphabet, setAlphabet] = useState(ALPHABET);
   const [insert, setInsert] = useState(true);
+  const [openModal, setOpenModal] = useState(false);
 
   return (
     <div>
@@ -44,6 +46,17 @@ const CommunityGrid = () => {
       >
         {insert ? 'Swap' : 'Insert'}
       </Button>
+      {openModal ? 
+        <ResponseModal 
+          open={openModal}
+          onClose={() => setOpenModal(false)}
+          onAccept={() => alert('Thank you for accepting.')}
+          header={'Do you accept?'}
+          description={'Click to accept.'}
+        />
+      : null
+      }
+      <button onClick={() => setOpenModal(true)}>Open Modal</button>
     </div>
   )
 }
